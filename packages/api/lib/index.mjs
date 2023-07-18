@@ -163,6 +163,8 @@ class ApiManager {
      */
     releaseQueue(reason) {
         var _a, _b;
+        if (!this._requestsQueue.length)
+            return;
         (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.releaseQueue()', {
             reason: reason || ''
         });
