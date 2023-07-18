@@ -170,6 +170,11 @@ var GoalType;
     GoalType["SCROLL_PERCENTAGE"] = "scroll_percentage";
     GoalType["CODE_TRIGGER"] = "code_trigger";
     GoalType["REVENUE"] = "revenue";
+    GoalType["GOOGLE_ANALYTICS_IMPORT"] = "ga_import";
+    GoalType["CLICKS_ELEMENT"] = "clicks_element";
+    GoalType["CLICKS_LINK"] = "clicks_link";
+    GoalType["SUBMITS_FORM"] = "submits_form";
+    GoalType["VISITS_PAGE"] = "visits_page";
 })(GoalType || (GoalType = {}));
 var GoalRevenueTriggeringType;
 (function (GoalRevenueTriggeringType) {

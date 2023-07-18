@@ -15,6 +15,10 @@ export type GoalSettings = {
     percentage?: number;
     tracked_items?: Array<GoalTrackedItem>;
     triggering_type?: GoalRevenueTriggeringType;
+    selector?: string;
+    href?: string;
+    action?: string;
+    ga_event?: string;
 };
 export type Goal = {
     id: Id;
