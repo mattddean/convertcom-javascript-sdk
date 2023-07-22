@@ -436,7 +436,9 @@ var DataManager = /** @class */ (function () {
         var bucketedVariation = null;
         var storeKey = this.getStoreKey(visitorId);
         // Check that visitor id already bucketed and stored and skip bucketing logic
-        var _o = this.getLocalStore(visitorId) || {}, _p = _o.bucketing, _q = _p === void 0 ? {} : _p, _r = experience.id.toString(), variationId = _q[_r], segments = _o.segments;
+        var storeData = this.getLocalStore(visitorId) || {};
+        var bucketing = storeData.bucketing, segments = storeData.segments;
+        var _o = bucketing || {}, _p = experience.id.toString(), variationId = _o[_p];
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
             // If it's found log debug info. The return value will be formed next step
@@ -448,11 +450,11 @@ var DataManager = /** @class */ (function () {
         }
         else {
             // Try to find a bucketed visitor in dataStore
-            var _s = ((_f = (_e = this.dataStoreManager) === null || _e === void 0 ? void 0 : _e.get) === null || _f === void 0 ? void 0 : _f.call(_e, storeKey)) || {}, _t = _s.bucketing, _u = _t === void 0 ? {} : _t, _v = experience.id.toString(), variationId_1 = _u[_v];
+            var _q = ((_f = (_e = this.dataStoreManager) === null || _e === void 0 ? void 0 : _e.get) === null || _f === void 0 ? void 0 : _f.call(_e, storeKey)) || {}, _r = _q.bucketing, _s = _r === void 0 ? {} : _r, _t = experience.id.toString(), variationId_1 = _s[_t];
             if (variationId_1 &&
                 (variation = this.retrieveVariation(experience.id, variationId_1))) {
                 // Store the data in local variable
-                this.putLocalStore(visitorId, __assign({ bucketing: (_a = {}, _a[experience.id.toString()] = variationId_1, _a) }, (segments ? { segments: segments } : {})));
+                this.putLocalStore(visitorId, __assign({ bucketing: __assign(__assign({}, bucketing), (_a = {}, _a[experience.id.toString()] = variationId_1, _a)) }, (segments ? { segments: segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
                 (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.debug) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND, {
                     storeKey: storeKey,
@@ -471,10 +473,10 @@ var DataManager = /** @class */ (function () {
                 variationId_1 = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId_1) {
                     // Store the data in local variable
-                    var storeData = __assign({ bucketing: (_b = {}, _b[experience.id.toString()] = variationId_1, _b) }, (segments ? { segments: segments } : {}));
-                    this.putLocalStore(visitorId, storeData);
+                    var storeData_1 = __assign({ bucketing: __assign(__assign({}, bucketing), (_b = {}, _b[experience.id.toString()] = variationId_1, _b)) }, (segments ? { segments: segments } : {}));
+                    this.putLocalStore(visitorId, storeData_1);
                     // Enqueue to store in dataStore
-                    this.dataStoreManager.enqueue(storeKey, storeData);
+                    this.dataStoreManager.enqueue(storeKey, storeData_1);
                     // Enqueue bucketing event to api
                     var bucketingEvent = {
                         experienceId: experience.id.toString(),

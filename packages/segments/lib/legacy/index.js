@@ -117,11 +117,12 @@ var SegmentsManager = /** @class */ (function () {
      * @param {SegmentsData} segments
      */
     SegmentsManager.prototype.putSegments = function (visitorId, segments) {
+        var storeData = this._dataManager.getLocalStore(visitorId) || {};
         // Store the data in local variable
-        this._dataManager.putLocalStore(visitorId, { segments: segments });
+        this._dataManager.putLocalStore(visitorId, __assign(__assign({}, storeData), { segments: segments }));
         // Enqueue to store in dataStore
         var storeKey = this._dataManager.getStoreKey(visitorId);
-        this._dataManager.dataStoreManager.enqueue(storeKey, { segments: segments });
+        this._dataManager.dataStoreManager.enqueue(storeKey, __assign(__assign({}, storeData), { segments: segments }));
     };
     SegmentsManager.prototype.setCustomSegments = function (visitorId, segments, segmentRule) {
         var e_1, _a, _b;

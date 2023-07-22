@@ -355,7 +355,9 @@ class DataManager {
         let bucketedVariation = null;
         const storeKey = this.getStoreKey(visitorId);
         // Check that visitor id already bucketed and stored and skip bucketing logic
-        const { bucketing: { [experience.id.toString()]: variationId } = {}, segments } = this.getLocalStore(visitorId) || {};
+        const storeData = this.getLocalStore(visitorId) || {};
+        const { bucketing, segments } = storeData;
+        const { [experience.id.toString()]: variationId } = bucketing || {};
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
             // If it's found log debug info. The return value will be formed next step
@@ -371,7 +373,7 @@ class DataManager {
             if (variationId &&
                 (variation = this.retrieveVariation(experience.id, variationId))) {
                 // Store the data in local variable
-                this.putLocalStore(visitorId, Object.assign({ bucketing: { [experience.id.toString()]: variationId } }, (segments ? { segments } : {})));
+                this.putLocalStore(visitorId, Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (segments ? { segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
                 (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.debug) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND, {
                     storeKey: storeKey,
@@ -390,7 +392,7 @@ class DataManager {
                 variationId = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId) {
                     // Store the data in local variable
-                    const storeData = Object.assign({ bucketing: { [experience.id.toString()]: variationId } }, (segments ? { segments } : {}));
+                    const storeData = Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (segments ? { segments } : {}));
                     this.putLocalStore(visitorId, storeData);
                     // Enqueue to store in dataStore
                     this.dataStoreManager.enqueue(storeKey, storeData);
