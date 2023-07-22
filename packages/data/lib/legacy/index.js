@@ -436,9 +436,8 @@ var DataManager = /** @class */ (function () {
         var bucketedVariation = null;
         var storeKey = this.getStoreKey(visitorId);
         // Check that visitor id already bucketed and stored and skip bucketing logic
-        var storeData = this.getLocalStore(visitorId) || {};
-        var bucketing = storeData.bucketing, segments = storeData.segments;
-        var _o = bucketing || {}, _p = experience.id.toString(), variationId = _o[_p];
+        var _o = this.getLocalStore(visitorId) || {}, bucketing = _o.bucketing, segments = _o.segments;
+        var _p = bucketing || {}, _q = experience.id.toString(), variationId = _p[_q];
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
             // If it's found log debug info. The return value will be formed next step
@@ -450,7 +449,7 @@ var DataManager = /** @class */ (function () {
         }
         else {
             // Try to find a bucketed visitor in dataStore
-            var _q = ((_f = (_e = this.dataStoreManager) === null || _e === void 0 ? void 0 : _e.get) === null || _f === void 0 ? void 0 : _f.call(_e, storeKey)) || {}, _r = _q.bucketing, _s = _r === void 0 ? {} : _r, _t = experience.id.toString(), variationId_1 = _s[_t];
+            var _r = ((_f = (_e = this.dataStoreManager) === null || _e === void 0 ? void 0 : _e.get) === null || _f === void 0 ? void 0 : _f.call(_e, storeKey)) || {}, _s = _r.bucketing, _t = _s === void 0 ? {} : _s, _u = experience.id.toString(), variationId_1 = _t[_u];
             if (variationId_1 &&
                 (variation = this.retrieveVariation(experience.id, variationId_1))) {
                 // Store the data in local variable
@@ -473,10 +472,10 @@ var DataManager = /** @class */ (function () {
                 variationId_1 = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId_1) {
                     // Store the data in local variable
-                    var storeData_1 = __assign({ bucketing: __assign(__assign({}, bucketing), (_b = {}, _b[experience.id.toString()] = variationId_1, _b)) }, (segments ? { segments: segments } : {}));
-                    this.putLocalStore(visitorId, storeData_1);
+                    var storeData = __assign({ bucketing: __assign(__assign({}, bucketing), (_b = {}, _b[experience.id.toString()] = variationId_1, _b)) }, (segments ? { segments: segments } : {}));
+                    this.putLocalStore(visitorId, storeData);
                     // Enqueue to store in dataStore
-                    this.dataStoreManager.enqueue(storeKey, storeData_1);
+                    this.dataStoreManager.enqueue(storeKey, storeData);
                     // Enqueue bucketing event to api
                     var bucketingEvent = {
                         experienceId: experience.id.toString(),
