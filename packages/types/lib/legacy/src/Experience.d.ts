@@ -9,6 +9,10 @@ import { Id } from './Id';
 import { RuleSet } from './Rule';
 import { Variation } from './Variation';
 import { Integration } from './Integration';
+export type MultipagePages = {
+    id: Id;
+    url: string;
+};
 export type Experience = {
     id: Id;
     name: string;
@@ -22,6 +26,7 @@ export type Experience = {
     url: string;
     global_js?: string;
     global_css?: string;
+    multipage_pages?: Array<MultipagePages>;
     variations: Array<Variation>;
     environments: Array<string>;
     settings?: {
