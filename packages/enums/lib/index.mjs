@@ -308,15 +308,15 @@ const VARIABLE_TYPES = [
  * Copyright(c) 2020 Convert Insights, Inc
  * License Apache-2.0
  */
-var VariationType;
-(function (VariationType) {
-    VariationType["RICH_STRUCTURE"] = "richStructure";
-    VariationType["CUSTOM_CODE"] = "customCode";
-    VariationType["DEFAULT_CODE"] = "defaultCode";
-    VariationType["DEFAULT_CODE_MULTIPLE"] = "defaultCodeMultipage";
-    VariationType["DEFAULT_REDIRECT"] = "defaultRedirect";
-    VariationType["FULLSTACK_FEATURE"] = "fullStackFeature";
-})(VariationType || (VariationType = {}));
+var VariationChangeType;
+(function (VariationChangeType) {
+    VariationChangeType["RICH_STRUCTURE"] = "richStructure";
+    VariationChangeType["CUSTOM_CODE"] = "customCode";
+    VariationChangeType["DEFAULT_CODE"] = "defaultCode";
+    VariationChangeType["DEFAULT_CODE_MULTIPAGE"] = "defaultCodeMultipage";
+    VariationChangeType["DEFAULT_REDIRECT"] = "defaultRedirect";
+    VariationChangeType["FULLSTACK_FEATURE"] = "fullStackFeature";
+})(VariationChangeType || (VariationChangeType = {}));
 
 /*!
  * Convert JS SDK
@@ -395,5 +395,5 @@ var VisitorType;
     VisitorType["RETURNING"] = "returning";
 })(VisitorType || (VisitorType = {}));
 
-export { AudienceType, BrowserType, DATA_ENTITIES, DeviceType, DoNotTrack, ERROR_MESSAGES, EventType, ExperienceType, FeatureStatus, GoalDataKey, GoalRevenueTriggeringType, GoalType, GoogleAnalyticsType, IntegrationProvider, LogLevel, LogMethod, MESSAGES, ProjectType, RuleError, SegmentsKeys, SourceType, SystemEvents, VARIABLE_TYPES, VariationType, VisitorType };
+export { AudienceType, BrowserType, DATA_ENTITIES, DeviceType, DoNotTrack, ERROR_MESSAGES, EventType, ExperienceType, FeatureStatus, GoalDataKey, GoalRevenueTriggeringType, GoalType, GoogleAnalyticsType, IntegrationProvider, LogLevel, LogMethod, MESSAGES, ProjectType, RuleError, SegmentsKeys, SourceType, SystemEvents, VARIABLE_TYPES, VariationChangeType, VisitorType };
 //# sourceMappingURL=index.mjs.map

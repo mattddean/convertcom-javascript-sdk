@@ -310,15 +310,15 @@ const VARIABLE_TYPES = [
  * Copyright(c) 2020 Convert Insights, Inc
  * License Apache-2.0
  */
-exports.VariationType = void 0;
-(function (VariationType) {
-    VariationType["RICH_STRUCTURE"] = "richStructure";
-    VariationType["CUSTOM_CODE"] = "customCode";
-    VariationType["DEFAULT_CODE"] = "defaultCode";
-    VariationType["DEFAULT_CODE_MULTIPLE"] = "defaultCodeMultipage";
-    VariationType["DEFAULT_REDIRECT"] = "defaultRedirect";
-    VariationType["FULLSTACK_FEATURE"] = "fullStackFeature";
-})(exports.VariationType || (exports.VariationType = {}));
+exports.VariationChangeType = void 0;
+(function (VariationChangeType) {
+    VariationChangeType["RICH_STRUCTURE"] = "richStructure";
+    VariationChangeType["CUSTOM_CODE"] = "customCode";
+    VariationChangeType["DEFAULT_CODE"] = "defaultCode";
+    VariationChangeType["DEFAULT_CODE_MULTIPAGE"] = "defaultCodeMultipage";
+    VariationChangeType["DEFAULT_REDIRECT"] = "defaultRedirect";
+    VariationChangeType["FULLSTACK_FEATURE"] = "fullStackFeature";
+})(exports.VariationChangeType || (exports.VariationChangeType = {}));
 
 /*!
  * Convert JS SDK
