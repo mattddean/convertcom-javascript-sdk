@@ -334,6 +334,7 @@ exports.BrowserType = void 0;
     BrowserType["FF"] = "FF";
     BrowserType["OP"] = "OP";
     BrowserType["SF"] = "SF";
+    BrowserType["EDG"] = "EDG";
     BrowserType["OTH"] = "OTH";
 })(exports.BrowserType || (exports.BrowserType = {}));
 

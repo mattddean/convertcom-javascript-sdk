@@ -332,6 +332,7 @@ var BrowserType;
     BrowserType["FF"] = "FF";
     BrowserType["OP"] = "OP";
     BrowserType["SF"] = "SF";
+    BrowserType["EDG"] = "EDG";
     BrowserType["OTH"] = "OTH";
 })(BrowserType || (BrowserType = {}));
 
