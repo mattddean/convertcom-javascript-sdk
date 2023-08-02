@@ -155,6 +155,7 @@ var GoalDataKey;
 (function (GoalDataKey) {
     GoalDataKey["AMOUNT"] = "amount";
     GoalDataKey["PRODUCTS_COUNT"] = "productsCount";
+    GoalDataKey["TRANSACTION_ID"] = "transactionId";
 })(GoalDataKey || (GoalDataKey = {}));
 
 /*!
