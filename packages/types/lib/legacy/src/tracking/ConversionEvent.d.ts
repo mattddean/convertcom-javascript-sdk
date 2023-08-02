@@ -8,6 +8,6 @@ import { GoalDataKey } from '@convertcom/js-sdk-enums';
 import { Id } from '../Id';
 export type ConversionEvent = {
     goalId: Id;
-    goalData?: Array<Record<GoalDataKey, number>>;
+    goalData?: Array<Record<GoalDataKey, Id>>;
     bucketingData?: Record<string, Id>;
 };
