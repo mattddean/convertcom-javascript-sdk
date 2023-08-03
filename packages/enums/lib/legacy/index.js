@@ -288,6 +288,8 @@ exports.SystemEvents = void 0;
     SystemEvents["BUCKETING"] = "bucketing";
     SystemEvents["CONVERSION"] = "conversion";
     SystemEvents["SEGMENTS"] = "segments";
+    SystemEvents["LOCATIONS"] = "locations";
+    SystemEvents["AUDIENCES"] = "audiences";
     SystemEvents["DATA_STORE_QUEUE_RELEASED"] = "data-store-queue-released";
 })(exports.SystemEvents || (exports.SystemEvents = {}));
 

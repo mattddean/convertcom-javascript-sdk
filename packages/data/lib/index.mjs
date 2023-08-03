@@ -242,11 +242,10 @@ class DataManager {
             : true; // skip if no environments
         let matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
-            let locationMatched = false;
+            let locationMatched = false, matchedLocations = [];
             if (locationProperties) {
                 if (Array.isArray(experience === null || experience === void 0 ? void 0 : experience.locations) &&
                     experience.locations.length) {
-                    let matchedLocations = [];
                     // Get attached locations
                     const locations = this.getItemsByIds(experience.locations, 'locations');
                     if (locations.length) {
@@ -301,6 +300,40 @@ class DataManager {
                     matchedSegmentations.length ||
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
+                    this._eventManager.fire(SystemEvents.LOCATIONS, {
+                        visitorId,
+                        experienceId: experience.id,
+                        experiencekey: experience.key,
+                        locations: matchedLocations.map(({ id, key, name }) => ({
+                            id,
+                            key,
+                            name
+                        }))
+                    }, null, true);
+                    if (matchedAudiences.length) {
+                        this._eventManager.fire(SystemEvents.AUDIENCES, {
+                            visitorId,
+                            experienceId: experience.id,
+                            experiencekey: experience.key,
+                            audiences: matchedAudiences.map(({ id, key, name }) => ({
+                                id,
+                                key,
+                                name
+                            }))
+                        }, null, true);
+                    }
+                    if (matchedSegmentations.length) {
+                        this._eventManager.fire(SystemEvents.SEGMENTS, {
+                            visitorId,
+                            experienceId: experience.id,
+                            experiencekey: experience.key,
+                            segments: matchedSegmentations.map(({ id, key, name }) => ({
+                                id,
+                                key,
+                                name
+                            }))
+                        }, null, true);
+                    }
                     // And experience has variations
                     if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_c = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _c === void 0 ? void 0 : _c.length)) {
                         return this._retrieveBucketing(visitorId, experience);

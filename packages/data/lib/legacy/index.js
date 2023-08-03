@@ -319,11 +319,10 @@ var DataManager = /** @class */ (function () {
             : true; // skip if no environments
         var matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
-            var locationMatched = false;
+            var locationMatched = false, matchedLocations = [];
             if (locationProperties) {
                 if (Array.isArray(experience === null || experience === void 0 ? void 0 : experience.locations) &&
                     experience.locations.length) {
-                    var matchedLocations = [];
                     // Get attached locations
                     var locations = this.getItemsByIds(experience.locations, 'locations');
                     if (locations.length) {
@@ -382,6 +381,49 @@ var DataManager = /** @class */ (function () {
                     matchedSegmentations.length ||
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
+                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATIONS, {
+                        visitorId: visitorId,
+                        experienceId: experience.id,
+                        experiencekey: experience.key,
+                        locations: matchedLocations.map(function (_a) {
+                            var id = _a.id, key = _a.key, name = _a.name;
+                            return ({
+                                id: id,
+                                key: key,
+                                name: name
+                            });
+                        })
+                    }, null, true);
+                    if (matchedAudiences.length) {
+                        this._eventManager.fire(jsSdkEnums.SystemEvents.AUDIENCES, {
+                            visitorId: visitorId,
+                            experienceId: experience.id,
+                            experiencekey: experience.key,
+                            audiences: matchedAudiences.map(function (_a) {
+                                var id = _a.id, key = _a.key, name = _a.name;
+                                return ({
+                                    id: id,
+                                    key: key,
+                                    name: name
+                                });
+                            })
+                        }, null, true);
+                    }
+                    if (matchedSegmentations.length) {
+                        this._eventManager.fire(jsSdkEnums.SystemEvents.SEGMENTS, {
+                            visitorId: visitorId,
+                            experienceId: experience.id,
+                            experiencekey: experience.key,
+                            segments: matchedSegmentations.map(function (_a) {
+                                var id = _a.id, key = _a.key, name = _a.name;
+                                return ({
+                                    id: id,
+                                    key: key,
+                                    name: name
+                                });
+                            })
+                        }, null, true);
+                    }
                     // And experience has variations
                     if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_d = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _d === void 0 ? void 0 : _d.length)) {
                         return this._retrieveBucketing(visitorId, experience);
