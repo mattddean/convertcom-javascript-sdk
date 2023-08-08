@@ -317,23 +317,31 @@ var DataManager = /** @class */ (function () {
             ? !experience.environments.length || // skip if empty
                 experience.environments.includes(environment)
             : true; // skip if no environments
+        // Get locations from DataStore
+        var storeData = this.getLocalStore(visitorId) || {};
+        var _o = storeData.locations, selectedLocations = _o === void 0 ? [] : _o;
         var matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
             var locationMatched = false, matchedLocations = [];
             if (locationProperties) {
                 if (Array.isArray(experience === null || experience === void 0 ? void 0 : experience.locations) &&
                     experience.locations.length) {
-                    // Get attached locations
-                    var locations = this.getItemsByIds(experience.locations, 'locations');
-                    if (locations.length) {
-                        // Validate locationProperties against locations rules
-                        matchedLocations = this.filterMatchedRecordsWithRule(locations, locationProperties);
-                        // Return rule errors if present
-                        matchedErrors = matchedLocations.filter(function (match) {
-                            return Object.values(jsSdkEnums.RuleError).includes(match);
-                        });
-                        if (matchedErrors.length)
-                            return matchedErrors[0];
+                    matchedLocations = experience.locations.filter(function (locationId) {
+                        return selectedLocations.includes(locationId.toString());
+                    });
+                    if (!matchedLocations.length) {
+                        // Get attached locations
+                        var locations = this.getItemsByIds(experience.locations, 'locations');
+                        if (locations.length) {
+                            // Validate locationProperties against locations rules
+                            matchedLocations = this.filterMatchedRecordsWithRule(locations, locationProperties);
+                            // Return rule errors if present
+                            matchedErrors = matchedLocations.filter(function (match) {
+                                return Object.values(jsSdkEnums.RuleError).includes(match);
+                            });
+                            if (matchedErrors.length)
+                                return matchedErrors[0];
+                        }
                     }
                     // If there are some matched locations
                     locationMatched = Boolean(matchedLocations.length);
@@ -381,49 +389,6 @@ var DataManager = /** @class */ (function () {
                     matchedSegmentations.length ||
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
-                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATIONS, {
-                        visitorId: visitorId,
-                        experienceId: experience.id,
-                        experiencekey: experience.key,
-                        locations: matchedLocations.map(function (_a) {
-                            var id = _a.id, key = _a.key, name = _a.name;
-                            return ({
-                                id: id,
-                                key: key,
-                                name: name
-                            });
-                        })
-                    }, null, true);
-                    if (matchedAudiences.length) {
-                        this._eventManager.fire(jsSdkEnums.SystemEvents.AUDIENCES, {
-                            visitorId: visitorId,
-                            experienceId: experience.id,
-                            experiencekey: experience.key,
-                            audiences: matchedAudiences.map(function (_a) {
-                                var id = _a.id, key = _a.key, name = _a.name;
-                                return ({
-                                    id: id,
-                                    key: key,
-                                    name: name
-                                });
-                            })
-                        }, null, true);
-                    }
-                    if (matchedSegmentations.length) {
-                        this._eventManager.fire(jsSdkEnums.SystemEvents.SEGMENTS, {
-                            visitorId: visitorId,
-                            experienceId: experience.id,
-                            experiencekey: experience.key,
-                            segments: matchedSegmentations.map(function (_a) {
-                                var id = _a.id, key = _a.key, name = _a.name;
-                                return ({
-                                    id: id,
-                                    key: key,
-                                    name: name
-                                });
-                            })
-                        }, null, true);
-                    }
                     // And experience has variations
                     if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_d = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _d === void 0 ? void 0 : _d.length)) {
                         return this._retrieveBucketing(visitorId, experience);
@@ -478,7 +443,7 @@ var DataManager = /** @class */ (function () {
         var bucketedVariation = null;
         var storeKey = this.getStoreKey(visitorId);
         // Check that visitor id already bucketed and stored and skip bucketing logic
-        var _o = this.getLocalStore(visitorId) || {}, bucketing = _o.bucketing, segments = _o.segments;
+        var _o = this.getLocalStore(visitorId) || {}, bucketing = _o.bucketing, locations = _o.locations, segments = _o.segments;
         var _p = bucketing || {}, _q = experience.id.toString(), variationId = _p[_q];
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
@@ -495,7 +460,7 @@ var DataManager = /** @class */ (function () {
             if (variationId_1 &&
                 (variation = this.retrieveVariation(experience.id, variationId_1))) {
                 // Store the data in local variable
-                this.putLocalStore(visitorId, __assign({ bucketing: __assign(__assign({}, bucketing), (_a = {}, _a[experience.id.toString()] = variationId_1, _a)) }, (segments ? { segments: segments } : {})));
+                this.putLocalStore(visitorId, __assign(__assign({ bucketing: __assign(__assign({}, bucketing), (_a = {}, _a[experience.id.toString()] = variationId_1, _a)) }, (locations ? { locations: locations } : {})), (segments ? { segments: segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
                 (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.debug) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND, {
                     storeKey: storeKey,
@@ -514,7 +479,7 @@ var DataManager = /** @class */ (function () {
                 variationId_1 = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId_1) {
                     // Store the data in local variable
-                    var storeData = __assign({ bucketing: __assign(__assign({}, bucketing), (_b = {}, _b[experience.id.toString()] = variationId_1, _b)) }, (segments ? { segments: segments } : {}));
+                    var storeData = __assign(__assign({ bucketing: __assign(__assign({}, bucketing), (_b = {}, _b[experience.id.toString()] = variationId_1, _b)) }, (locations ? { locations: locations } : {})), (segments ? { segments: segments } : {}));
                     this.putLocalStore(visitorId, storeData);
                     // Enqueue to store in dataStore
                     this.dataStoreManager.enqueue(storeKey, storeData);
@@ -604,6 +569,51 @@ var DataManager = /** @class */ (function () {
      */
     DataManager.prototype.getStoreKey = function (visitorId) {
         return "".concat(this._accountId, "-").concat(this._projectId, "-").concat(visitorId);
+    };
+    DataManager.prototype.selectLocations = function (visitorId, items, locationProperties) {
+        var _a, _b, _c, _d, _e;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.selectLocations()', {
+            items: items,
+            locationProperties: locationProperties
+        });
+        // Get locations from DataStore
+        var storeData = this.getLocalStore(visitorId) || {};
+        var bucketing = storeData.bucketing, _f = storeData.locations, locations = _f === void 0 ? [] : _f, segments = storeData.segments;
+        var matchedRecords = [];
+        var match;
+        if (jsSdkUtils.arrayNotEmpty(items)) {
+            for (var i = 0, length_1 = items.length; i < length_1; i++) {
+                if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
+                    continue;
+                if (locations.includes(items[i].id.toString())) {
+                    matchedRecords.push(items[i]);
+                    continue;
+                }
+                match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
+                if (match === true) {
+                    locations.push(items[i].id.toString());
+                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATIONS, {
+                        visitorId: visitorId,
+                        location: {
+                            id: items[i].id,
+                            key: items[i].key,
+                            name: items[i].name
+                        }
+                    }, null, true);
+                    matchedRecords.push(items[i]);
+                }
+                else if (match !== false) {
+                    // catch rule errors
+                    matchedRecords.push(match);
+                }
+            }
+        }
+        // Store the data in local variable
+        this.putLocalStore(visitorId, __assign(__assign(__assign({}, (bucketing ? { bucketing: bucketing } : {})), { locations: locations }), (segments ? { segments: segments } : {})));
+        (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.debug) === null || _e === void 0 ? void 0 : _e.call(_d, 'DataManager.selectLocations()', {
+            matchedRecords: matchedRecords
+        });
+        return matchedRecords;
     };
     /**
      * Retrieve variation for visitor
@@ -704,7 +714,7 @@ var DataManager = /** @class */ (function () {
         var matchedRecords = [];
         var match;
         if (jsSdkUtils.arrayNotEmpty(items)) {
-            for (var i = 0, length_1 = items.length; i < length_1; i++) {
+            for (var i = 0, length_2 = items.length; i < length_2; i++) {
                 if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
                     continue;
                 match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules);
@@ -740,7 +750,7 @@ var DataManager = /** @class */ (function () {
         var _f = storeData, _g = _f.segments, _h = _g === void 0 ? {} : _g, _j = jsSdkEnums.SegmentsKeys.CUSTOM_SEGMENTS, _k = _h[_j], customSegments = _k === void 0 ? [] : _k;
         var matchedRecords = [];
         if (jsSdkUtils.arrayNotEmpty(items)) {
-            for (var i = 0, length_2 = items.length; i < length_2; i++) {
+            for (var i = 0, length_3 = items.length; i < length_3; i++) {
                 if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.id))
                     continue;
                 if (customSegments.includes(items[i].id)) {
@@ -801,7 +811,7 @@ var DataManager = /** @class */ (function () {
         });
         var list = this.getEntitiesList(entityType);
         if (jsSdkUtils.arrayNotEmpty(list)) {
-            for (var i = 0, length_3 = list.length; i < length_3; i++) {
+            for (var i = 0, length_4 = list.length; i < length_4; i++) {
                 if (list[i] && String((_c = list[i]) === null || _c === void 0 ? void 0 : _c[identityField]) === String(identity)) {
                     return list[i];
                 }
@@ -856,7 +866,7 @@ var DataManager = /** @class */ (function () {
         var list = this.getEntitiesList(path);
         var items = [];
         if (jsSdkUtils.arrayNotEmpty(list)) {
-            for (var i = 0, length_4 = list.length; i < length_4; i++) {
+            for (var i = 0, length_5 = list.length; i < length_5; i++) {
                 if (keys.indexOf((_a = list[i]) === null || _a === void 0 ? void 0 : _a.key) !== -1) {
                     items.push(list[i]);
                 }
@@ -880,7 +890,7 @@ var DataManager = /** @class */ (function () {
         if (jsSdkUtils.arrayNotEmpty(ids)) {
             var list = this.getEntitiesList(path);
             if (jsSdkUtils.arrayNotEmpty(list)) {
-                for (var i = 0, length_5 = list.length; i < length_5; i++) {
+                for (var i = 0, length_6 = list.length; i < length_6; i++) {
                     if (ids.indexOf(Number((_c = list[i]) === null || _c === void 0 ? void 0 : _c.id)) !== -1 ||
                         ids.indexOf(String((_d = list[i]) === null || _d === void 0 ? void 0 : _d.id)) !== -1) {
                         items.push(list[i]);

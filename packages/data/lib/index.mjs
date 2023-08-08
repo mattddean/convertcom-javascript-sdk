@@ -240,21 +240,27 @@ class DataManager {
             ? !experience.environments.length || // skip if empty
                 experience.environments.includes(environment)
             : true; // skip if no environments
+        // Get locations from DataStore
+        const storeData = this.getLocalStore(visitorId) || {};
+        const { locations: selectedLocations = [] } = storeData;
         let matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
             let locationMatched = false, matchedLocations = [];
             if (locationProperties) {
                 if (Array.isArray(experience === null || experience === void 0 ? void 0 : experience.locations) &&
                     experience.locations.length) {
-                    // Get attached locations
-                    const locations = this.getItemsByIds(experience.locations, 'locations');
-                    if (locations.length) {
-                        // Validate locationProperties against locations rules
-                        matchedLocations = this.filterMatchedRecordsWithRule(locations, locationProperties);
-                        // Return rule errors if present
-                        matchedErrors = matchedLocations.filter((match) => Object.values(RuleError).includes(match));
-                        if (matchedErrors.length)
-                            return matchedErrors[0];
+                    matchedLocations = experience.locations.filter((locationId) => selectedLocations.includes(locationId.toString()));
+                    if (!matchedLocations.length) {
+                        // Get attached locations
+                        const locations = this.getItemsByIds(experience.locations, 'locations');
+                        if (locations.length) {
+                            // Validate locationProperties against locations rules
+                            matchedLocations = this.filterMatchedRecordsWithRule(locations, locationProperties);
+                            // Return rule errors if present
+                            matchedErrors = matchedLocations.filter((match) => Object.values(RuleError).includes(match));
+                            if (matchedErrors.length)
+                                return matchedErrors[0];
+                        }
                     }
                     // If there are some matched locations
                     locationMatched = Boolean(matchedLocations.length);
@@ -300,40 +306,6 @@ class DataManager {
                     matchedSegmentations.length ||
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
-                    this._eventManager.fire(SystemEvents.LOCATIONS, {
-                        visitorId,
-                        experienceId: experience.id,
-                        experiencekey: experience.key,
-                        locations: matchedLocations.map(({ id, key, name }) => ({
-                            id,
-                            key,
-                            name
-                        }))
-                    }, null, true);
-                    if (matchedAudiences.length) {
-                        this._eventManager.fire(SystemEvents.AUDIENCES, {
-                            visitorId,
-                            experienceId: experience.id,
-                            experiencekey: experience.key,
-                            audiences: matchedAudiences.map(({ id, key, name }) => ({
-                                id,
-                                key,
-                                name
-                            }))
-                        }, null, true);
-                    }
-                    if (matchedSegmentations.length) {
-                        this._eventManager.fire(SystemEvents.SEGMENTS, {
-                            visitorId,
-                            experienceId: experience.id,
-                            experiencekey: experience.key,
-                            segments: matchedSegmentations.map(({ id, key, name }) => ({
-                                id,
-                                key,
-                                name
-                            }))
-                        }, null, true);
-                    }
                     // And experience has variations
                     if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_c = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _c === void 0 ? void 0 : _c.length)) {
                         return this._retrieveBucketing(visitorId, experience);
@@ -386,7 +358,7 @@ class DataManager {
         let bucketedVariation = null;
         const storeKey = this.getStoreKey(visitorId);
         // Check that visitor id already bucketed and stored and skip bucketing logic
-        const { bucketing, segments } = this.getLocalStore(visitorId) || {};
+        const { bucketing, locations, segments } = this.getLocalStore(visitorId) || {};
         const { [experience.id.toString()]: variationId } = bucketing || {};
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
@@ -403,7 +375,7 @@ class DataManager {
             if (variationId &&
                 (variation = this.retrieveVariation(experience.id, variationId))) {
                 // Store the data in local variable
-                this.putLocalStore(visitorId, Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (segments ? { segments } : {})));
+                this.putLocalStore(visitorId, Object.assign(Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (locations ? { locations } : {})), (segments ? { segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
                 (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.debug) === null || _f === void 0 ? void 0 : _f.call(_e, MESSAGES.BUCKETED_VISITOR_FOUND, {
                     storeKey: storeKey,
@@ -422,7 +394,7 @@ class DataManager {
                 variationId = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId) {
                     // Store the data in local variable
-                    const storeData = Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (segments ? { segments } : {}));
+                    const storeData = Object.assign(Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (locations ? { locations } : {})), (segments ? { segments } : {}));
                     this.putLocalStore(visitorId, storeData);
                     // Enqueue to store in dataStore
                     this.dataStoreManager.enqueue(storeKey, storeData);
@@ -501,6 +473,51 @@ class DataManager {
      */
     getStoreKey(visitorId) {
         return `${this._accountId}-${this._projectId}-${visitorId}`;
+    }
+    selectLocations(visitorId, items, locationProperties) {
+        var _a, _b, _c, _d, _e;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.selectLocations()', {
+            items: items,
+            locationProperties: locationProperties
+        });
+        // Get locations from DataStore
+        const storeData = this.getLocalStore(visitorId) || {};
+        const { bucketing, locations = [], segments } = storeData;
+        const matchedRecords = [];
+        let match;
+        if (arrayNotEmpty(items)) {
+            for (let i = 0, length = items.length; i < length; i++) {
+                if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
+                    continue;
+                if (locations.includes(items[i].id.toString())) {
+                    matchedRecords.push(items[i]);
+                    continue;
+                }
+                match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
+                if (match === true) {
+                    locations.push(items[i].id.toString());
+                    this._eventManager.fire(SystemEvents.LOCATIONS, {
+                        visitorId,
+                        location: {
+                            id: items[i].id,
+                            key: items[i].key,
+                            name: items[i].name
+                        }
+                    }, null, true);
+                    matchedRecords.push(items[i]);
+                }
+                else if (match !== false) {
+                    // catch rule errors
+                    matchedRecords.push(match);
+                }
+            }
+        }
+        // Store the data in local variable
+        this.putLocalStore(visitorId, Object.assign(Object.assign(Object.assign({}, (bucketing ? { bucketing } : {})), { locations }), (segments ? { segments } : {})));
+        (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.debug) === null || _e === void 0 ? void 0 : _e.call(_d, 'DataManager.selectLocations()', {
+            matchedRecords: matchedRecords
+        });
+        return matchedRecords;
     }
     /**
      * Retrieve variation for visitor

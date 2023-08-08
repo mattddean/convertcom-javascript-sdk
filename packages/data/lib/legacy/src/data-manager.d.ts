@@ -102,6 +102,7 @@ export declare class DataManager implements DataManagerInterface {
      * @private
      */
     getStoreKey(visitorId: Id): string;
+    selectLocations(visitorId: string, items: Array<Record<string, any>>, locationProperties: Record<string, any>): Array<Record<string, any> | RuleError>;
     /**
      * Retrieve variation for visitor
      * @param {string} visitorId
