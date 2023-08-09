@@ -570,6 +570,13 @@ var DataManager = /** @class */ (function () {
     DataManager.prototype.getStoreKey = function (visitorId) {
         return "".concat(this._accountId, "-").concat(this._projectId, "-").concat(visitorId);
     };
+    /**
+     *
+     * @param {string} visitorId
+     * @param {Array<Record<string, any>>} items
+     * @param {Record<string, any>} locationProperties
+     * @returns {Array<Record<string, any> | RuleError>}
+     */
     DataManager.prototype.selectLocations = function (visitorId, items, locationProperties) {
         var _a, _b, _c, _d, _e;
         (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.selectLocations()', {
