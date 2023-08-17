@@ -283,22 +283,21 @@ var DataManager = /** @class */ (function () {
         configurable: true
     });
     /**
-     * Retrieve variation for visitor
+     * Validate locationProperties against locations rules and visitorProperties against audiences rules
      * @param {string} visitorId
      * @param {string|Id} identity Value of the field which name is provided in identityField
      * @param {Record<string, any> | null} visitorProperties
      * @param {Record<string, any> | null} locationProperties
      * @param {IdentityField=} identityField Defaults to 'key'
      * @param {string=} environment
-     * @return {BucketedVariation | RuleError}
-     * @private
+     * @return {Experience | RuleError}
      */
-    DataManager.prototype._getBucketingByField = function (visitorId, identity, visitorProperties, locationProperties, identityField, environment) {
+    DataManager.prototype.matchRulesByField = function (visitorId, identity, visitorProperties, locationProperties, identityField, environment) {
         var _a;
         var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         if (identityField === void 0) { identityField = 'key'; }
         if (environment === void 0) { environment = this._environment; }
-        (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.trace) === null || _c === void 0 ? void 0 : _c.call(_b, 'DataManager._getBucketingByField()', {
+        (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.trace) === null || _c === void 0 ? void 0 : _c.call(_b, 'DataManager.matchRulesByField()', {
             visitorId: visitorId,
             identity: identity,
             visitorProperties: visitorProperties,
@@ -391,7 +390,7 @@ var DataManager = /** @class */ (function () {
                 ) {
                     // And experience has variations
                     if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_d = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _d === void 0 ? void 0 : _d.length)) {
-                        return this._retrieveBucketing(visitorId, experience);
+                        return experience;
                     }
                     else {
                         (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.debug) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND, {
@@ -422,6 +421,39 @@ var DataManager = /** @class */ (function () {
                 identity: identity,
                 identityField: identityField
             });
+        }
+        return null;
+    };
+    /**
+     * Retrieve variation for visitor
+     * @param {string} visitorId
+     * @param {string|Id} identity Value of the field which name is provided in identityField
+     * @param {Record<string, any> | null} visitorProperties
+     * @param {Record<string, any> | null} locationProperties
+     * @param {IdentityField=} identityField Defaults to 'key'
+     * @param {string=} environment
+     * @return {BucketedVariation | RuleError}
+     * @private
+     */
+    DataManager.prototype._getBucketingByField = function (visitorId, identity, visitorProperties, locationProperties, identityField, environment) {
+        var _a, _b;
+        if (identityField === void 0) { identityField = 'key'; }
+        if (environment === void 0) { environment = this._environment; }
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager._getBucketingByField()', {
+            visitorId: visitorId,
+            identity: identity,
+            visitorProperties: visitorProperties,
+            locationProperties: locationProperties,
+            identityField: identityField,
+            environment: environment
+        });
+        // Retrieve the experience
+        var experience = this.matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField, environment);
+        if (experience) {
+            if (Object.values(jsSdkEnums.RuleError).includes(experience)) {
+                return experience;
+            }
+            return this._retrieveBucketing(visitorId, experience);
         }
         return null;
     };

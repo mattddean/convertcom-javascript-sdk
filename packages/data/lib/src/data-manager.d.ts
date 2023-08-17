@@ -5,7 +5,7 @@ import { DataManagerInterface } from './interfaces/data-manager';
 import { EventManagerInterface } from '@convertcom/js-sdk-event';
 import { LogManagerInterface } from '@convertcom/js-sdk-logger';
 import { RuleManagerInterface } from '@convertcom/js-sdk-rules';
-import { Entity, Id, Config, ConfigData, IdentityField, BucketedVariation, StoreData, SegmentsData } from '@convertcom/js-sdk-types';
+import { Entity, Id, Config, ConfigData, Experience, IdentityField, BucketedVariation, StoreData, SegmentsData } from '@convertcom/js-sdk-types';
 import { RuleError, GoalDataKey } from '@convertcom/js-sdk-enums';
 /**
  * Provides logic for data. Stores bucket with help of dataStore if it's provided
@@ -57,6 +57,17 @@ export declare class DataManager implements DataManagerInterface {
      * dataStoreManager getter
      */
     get dataStoreManager(): DataStoreManagerInterface;
+    /**
+     * Validate locationProperties against locations rules and visitorProperties against audiences rules
+     * @param {string} visitorId
+     * @param {string|Id} identity Value of the field which name is provided in identityField
+     * @param {Record<string, any> | null} visitorProperties
+     * @param {Record<string, any> | null} locationProperties
+     * @param {IdentityField=} identityField Defaults to 'key'
+     * @param {string=} environment
+     * @return {Experience | RuleError}
+     */
+    matchRulesByField(visitorId: string, identity: string | Id, visitorProperties: Record<string, any> | null, locationProperties: Record<string, any> | null, identityField?: IdentityField, environment?: string): Experience | RuleError;
     /**
      * Retrieve variation for visitor
      * @param {string} visitorId
