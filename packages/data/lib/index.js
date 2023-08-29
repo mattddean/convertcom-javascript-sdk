@@ -528,14 +528,10 @@ class DataManager {
             for (let i = 0, length = items.length; i < length; i++) {
                 if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
                     continue;
-                if (locations.includes(items[i].id.toString())) {
-                    matchedRecords.push(items[i]);
-                    continue;
-                }
                 match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
-                if (match === true) {
+                if (match === true && !locations.includes(items[i].id.toString())) {
                     locations.push(items[i].id.toString());
-                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATIONS, {
+                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_ACTIVATED, {
                         visitorId,
                         location: {
                             id: items[i].id,
@@ -548,6 +544,19 @@ class DataManager {
                 else if (match !== false) {
                     // catch rule errors
                     matchedRecords.push(match);
+                }
+                else if (match === false &&
+                    locations.includes(items[i].id.toString())) {
+                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_DEACTIVATED, {
+                        visitorId,
+                        location: {
+                            id: items[i].id,
+                            key: items[i].key,
+                            name: items[i].name
+                        }
+                    }, null, true);
+                    const locationIndex = locations.findIndex((location) => location === items[i].id.toString());
+                    locations.splice(locationIndex, 1);
                 }
             }
         }

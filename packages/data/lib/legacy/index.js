@@ -621,17 +621,13 @@ var DataManager = /** @class */ (function () {
         var matchedRecords = [];
         var match;
         if (jsSdkUtils.arrayNotEmpty(items)) {
-            for (var i = 0, length_1 = items.length; i < length_1; i++) {
+            var _loop_1 = function (i, length_1) {
                 if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
-                    continue;
-                if (locations.includes(items[i].id.toString())) {
-                    matchedRecords.push(items[i]);
-                    continue;
-                }
-                match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
-                if (match === true) {
+                    return "continue";
+                match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules);
+                if (match === true && !locations.includes(items[i].id.toString())) {
                     locations.push(items[i].id.toString());
-                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATIONS, {
+                    this_1._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_ACTIVATED, {
                         visitorId: visitorId,
                         location: {
                             id: items[i].id,
@@ -645,6 +641,23 @@ var DataManager = /** @class */ (function () {
                     // catch rule errors
                     matchedRecords.push(match);
                 }
+                else if (match === false &&
+                    locations.includes(items[i].id.toString())) {
+                    this_1._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_DEACTIVATED, {
+                        visitorId: visitorId,
+                        location: {
+                            id: items[i].id,
+                            key: items[i].key,
+                            name: items[i].name
+                        }
+                    }, null, true);
+                    var locationIndex = locations.findIndex(function (location) { return location === items[i].id.toString(); });
+                    locations.splice(locationIndex, 1);
+                }
+            };
+            var this_1 = this;
+            for (var i = 0, length_1 = items.length; i < length_1; i++) {
+                _loop_1(i, length_1);
             }
         }
         // Store the data in local variable
