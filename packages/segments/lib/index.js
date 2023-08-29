@@ -52,7 +52,7 @@ class SegmentsManager {
         this._dataManager.dataStoreManager.enqueue(storeKey, Object.assign(Object.assign({}, storeData), { segments }));
     }
     setCustomSegments(visitorId, segments, segmentRule) {
-        var _a, _b, _c, _d, _e;
+        var _a;
         const storeData = this._dataManager.getLocalStore(visitorId) || {};
         // Get custom segments ID from DataStore
         const { segments: { [jsSdkEnums.SegmentsKeys.CUSTOM_SEGMENTS]: customSegments = [] } = {} } = storeData;
@@ -67,9 +67,7 @@ class SegmentsManager {
             }
             if (!segmentRule || segmentsMatched) {
                 const segmentId = (_a = segment === null || segment === void 0 ? void 0 : segment.id) === null || _a === void 0 ? void 0 : _a.toString();
-                if (customSegments.includes(segmentId)) {
-                    (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.warn) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.CUSTOM_SEGMENTS_KEY_FOUND);
-                }
+                if (customSegments.includes(segmentId)) ;
                 else {
                     segmentIds.push(segmentId);
                 }
@@ -80,9 +78,6 @@ class SegmentsManager {
             segmentsData = Object.assign(Object.assign({}, (storeData.segments || {})), { [jsSdkEnums.SegmentsKeys.CUSTOM_SEGMENTS]: [...customSegments, ...segmentIds] });
             // Merge custom segments ID into DataStore
             this.putSegments(visitorId, segmentsData);
-        }
-        else {
-            (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.warn) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.SEGMENTS_NOT_FOUND);
         }
         return segmentsData;
     }

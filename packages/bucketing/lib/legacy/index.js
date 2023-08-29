@@ -2,7 +2,6 @@
 
 var Murmurhash = require('murmurhash');
 var jsSdkUtils = require('@convertcom/js-sdk-utils');
-var jsSdkEnums = require('@convertcom/js-sdk-enums');
 
 /*!
  * Convert JS SDK
@@ -28,13 +27,12 @@ var BucketingManager = /** @class */ (function () {
      */
     function BucketingManager(config, _a) {
         var _b = _a === void 0 ? {} : _a, loggerManager = _b.loggerManager;
-        var _c, _d;
         this._max_traffic = DEFAULT_MAX_TRAFFIC;
         this._hash_seed = DEFAULT_HASH_SEED;
         this._loggerManager = loggerManager;
         this._max_traffic = jsSdkUtils.objectDeepValue(config, 'bucketing.max_traffic', DEFAULT_MAX_TRAFFIC, true);
         this._hash_seed = jsSdkUtils.objectDeepValue(config, 'bucketing.hash_seed', DEFAULT_HASH_SEED, true);
-        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.trace) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.BUCKETING_CONSTRUCTOR, this);
+        // eslint-disable-line
     }
     /**
      * Select variation based on its percentages and value provided
@@ -44,7 +42,6 @@ var BucketingManager = /** @class */ (function () {
      * @return {string | null}
      */
     BucketingManager.prototype.selectBucket = function (buckets, value, redistribute) {
-        var _a, _b;
         if (redistribute === void 0) { redistribute = 0; }
         var variation = null;
         var prev = 0;
@@ -56,11 +53,7 @@ var BucketingManager = /** @class */ (function () {
             }
             return false;
         });
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'BucketingManager.selectBucket()', {
-            buckets: buckets,
-            value: value,
-            redistribute: redistribute
-        }, { variation: variation });
+        // eslint-disable-line
         return variation || null;
     };
     /**
@@ -70,17 +63,11 @@ var BucketingManager = /** @class */ (function () {
      * @return {number}
      */
     BucketingManager.prototype.getValueVisitorBased = function (visitorId, seed) {
-        var _a, _b;
         if (seed === void 0) { seed = this._hash_seed; }
         var hash = Murmurhash.v3(String(visitorId), seed);
         var val = (hash / DEFAULT_MAX_HASH) * this._max_traffic;
         var result = parseInt(String(val), 10);
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'BucketingManager.getValueVisitorBased()', {
-            visitorId: visitorId,
-            seed: seed,
-            val: val,
-            result: result
-        });
+        // eslint-disable-line
         return result;
     };
     /**

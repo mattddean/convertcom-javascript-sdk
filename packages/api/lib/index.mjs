@@ -142,10 +142,7 @@ class ApiManager {
      * @param {SegmentsData} segments
      */
     enqueue(visitorId, eventRequest, segments) {
-        var _a, _b;
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.enqueue()', {
-            eventRequest: eventRequest
-        });
+        // eslint-disable-line
         this._requestsQueue.push(visitorId, eventRequest, segments);
         if (this._requestsQueue.length === this.batchSize) {
             this.releaseQueue('size').then();
@@ -162,12 +159,9 @@ class ApiManager {
      * @return {Promise<any>}
      */
     releaseQueue(reason) {
-        var _a, _b;
         if (!this._requestsQueue.length)
             return;
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.releaseQueue()', {
-            reason: reason || ''
-        });
+        // eslint-disable-line
         this.stopQueue();
         const payload = this._trackingEvent;
         payload.visitors = this._requestsQueue.items.slice();
@@ -184,13 +178,11 @@ class ApiManager {
             });
         })
             .catch((error) => {
-            var _a, _b, _c, _d;
+            var _a, _b;
             // TODO: set an exponential backoff
-            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.error) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.releaseQueue()', {
-                error: error.message
-            });
+            // eslint-disable-line
             this.startQueue();
-            (_d = (_c = this._eventManager) === null || _c === void 0 ? void 0 : _c.fire) === null || _d === void 0 ? void 0 : _d.call(_c, SystemEvents.API_QUEUE_RELEASED, { reason: reason }, error);
+            (_b = (_a = this._eventManager) === null || _a === void 0 ? void 0 : _a.fire) === null || _b === void 0 ? void 0 : _b.call(_a, SystemEvents.API_QUEUE_RELEASED, { reason: reason }, error);
         });
     }
     /**
@@ -224,10 +216,7 @@ class ApiManager {
      * @return {Promise<ConfigData>}
      */
     getConfigByKey(sdkKey) {
-        var _a, _b;
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.getConfigByKey()', {
-            sdkKey
-        });
+        // eslint-disable-line
         return new Promise((resolve, reject) => {
             this.request('get', {
                 base: this._configEndpoint,

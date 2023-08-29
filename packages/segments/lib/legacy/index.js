@@ -126,10 +126,10 @@ var SegmentsManager = /** @class */ (function () {
     };
     SegmentsManager.prototype.setCustomSegments = function (visitorId, segments, segmentRule) {
         var e_1, _a, _b;
-        var _c, _d, _e, _f, _g;
+        var _c;
         var storeData = this._dataManager.getLocalStore(visitorId) || {};
         // Get custom segments ID from DataStore
-        var _h = storeData, _j = _h.segments, _k = _j === void 0 ? {} : _j, _l = jsSdkEnums.SegmentsKeys.CUSTOM_SEGMENTS, _m = _k[_l], customSegments = _m === void 0 ? [] : _m;
+        var _d = storeData, _e = _d.segments, _f = _e === void 0 ? {} : _e, _g = jsSdkEnums.SegmentsKeys.CUSTOM_SEGMENTS, _h = _f[_g], customSegments = _h === void 0 ? [] : _h;
         var segmentIds = [];
         var segmentsMatched = false;
         try {
@@ -144,7 +144,7 @@ var SegmentsManager = /** @class */ (function () {
                 if (!segmentRule || segmentsMatched) {
                     var segmentId = (_c = segment === null || segment === void 0 ? void 0 : segment.id) === null || _c === void 0 ? void 0 : _c.toString();
                     if (customSegments.includes(segmentId)) {
-                        (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.warn) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.CUSTOM_SEGMENTS_KEY_FOUND);
+                        // eslint-disable-line
                     }
                     else {
                         segmentIds.push(segmentId);
@@ -164,9 +164,6 @@ var SegmentsManager = /** @class */ (function () {
             segmentsData = __assign(__assign({}, (storeData.segments || {})), (_b = {}, _b[jsSdkEnums.SegmentsKeys.CUSTOM_SEGMENTS] = __spreadArray(__spreadArray([], __read(customSegments), false), __read(segmentIds), false), _b));
             // Merge custom segments ID into DataStore
             this.putSegments(visitorId, segmentsData);
-        }
-        else {
-            (_g = (_f = this._loggerManager) === null || _f === void 0 ? void 0 : _f.warn) === null || _g === void 0 ? void 0 : _g.call(_f, jsSdkEnums.MESSAGES.SEGMENTS_NOT_FOUND);
         }
         return segmentsData;
     };
