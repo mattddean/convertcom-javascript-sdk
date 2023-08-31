@@ -1,5 +1,5 @@
 import { objectDeepMerge, objectDeepValue, arrayNotEmpty, objectNotEmpty } from '@convertcom/js-sdk-utils';
-import { SystemEvents, DATA_ENTITIES, RuleError, EventType, SegmentsKeys } from '@convertcom/js-sdk-enums';
+import { SystemEvents, ERROR_MESSAGES, DATA_ENTITIES, MESSAGES, RuleError, EventType, SegmentsKeys } from '@convertcom/js-sdk-enums';
 
 /*!
  * Convert JS SDK
@@ -39,26 +39,34 @@ class DataStoreManager {
         this._requestsQueue = {};
     }
     set(key, data) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         try {
             (_b = (_a = this.dataStore) === null || _a === void 0 ? void 0 : _a.set) === null || _b === void 0 ? void 0 : _b.call(_a, key, data);
         }
         catch (error) {
-            // eslint-disable-line
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.error) === null || _d === void 0 ? void 0 : _d.call(_c, 'DataStoreManager.set()', {
+                error: error.message
+            });
         }
     }
     get(key) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         try {
             return (_b = (_a = this.dataStore) === null || _a === void 0 ? void 0 : _a.get) === null || _b === void 0 ? void 0 : _b.call(_a, key);
         }
         catch (error) {
-            // eslint-disable-line
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.error) === null || _d === void 0 ? void 0 : _d.call(_c, 'DataStoreManager.get()', {
+                error: error.message
+            });
         }
         return null;
     }
     enqueue(key, data) {
-        // eslint-disable-line
+        var _a, _b;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataStoreManager.enqueue()', {
+            key: key,
+            data: data
+        });
         const addData = {};
         addData[key] = data;
         this._requestsQueue = objectDeepMerge(this._requestsQueue, addData);
@@ -72,13 +80,15 @@ class DataStoreManager {
         }
     }
     releaseQueue(reason) {
-        var _a, _b;
-        // eslint-disable-line
+        var _a, _b, _c, _d;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataStoreManager.releaseQueue()', {
+            reason: reason || ''
+        });
         this.stopQueue();
         for (const key in this._requestsQueue) {
             this.set(key, this._requestsQueue[key]);
         }
-        (_b = (_a = this._eventManager) === null || _a === void 0 ? void 0 : _a.fire) === null || _b === void 0 ? void 0 : _b.call(_a, SystemEvents.DATA_STORE_QUEUE_RELEASED, {
+        (_d = (_c = this._eventManager) === null || _c === void 0 ? void 0 : _c.fire) === null || _d === void 0 ? void 0 : _d.call(_c, SystemEvents.DATA_STORE_QUEUE_RELEASED, {
             reason: reason || ''
         });
     }
@@ -95,9 +105,13 @@ class DataStoreManager {
      * @param {any=} dataStore
      */
     set dataStore(dataStore) {
+        var _a, _b;
         if (dataStore) {
             if (this.isValidDataStore(dataStore)) {
                 this._dataStore = dataStore;
+            }
+            else {
+                (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.error) === null || _b === void 0 ? void 0 : _b.call(_a, ERROR_MESSAGES.DATA_STORE_NOT_VALID);
             }
         }
     }
@@ -142,7 +156,7 @@ class DataManager {
      * @param {LogManagerInterface} dependencies.loggerManager
      */
     constructor(config, { bucketingManager, ruleManager, eventManager, apiManager, loggerManager }) {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e;
         this._dataEntities = DATA_ENTITIES;
         this._localStoreLimit = LOCAL_STORE_LIMIT;
         this._bucketedVisitors = new Map();
@@ -157,14 +171,17 @@ class DataManager {
         this._accountId = (_a = this._data) === null || _a === void 0 ? void 0 : _a.account_id;
         this._projectId = (_c = (_b = this._data) === null || _b === void 0 ? void 0 : _b.project) === null || _c === void 0 ? void 0 : _c.id;
         this.dataStoreManager = objectDeepValue(config, 'dataStore');
-        // eslint-disable-line
+        (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.trace) === null || _e === void 0 ? void 0 : _e.call(_d, MESSAGES.DATA_CONSTRUCTOR, this);
     }
     set data(data) {
-        var _a;
+        var _a, _b, _c;
         if (this.isValidConfigData(data)) {
             this._data = data;
             this._accountId = data === null || data === void 0 ? void 0 : data.account_id;
             this._projectId = (_a = data === null || data === void 0 ? void 0 : data.project) === null || _a === void 0 ? void 0 : _a.id;
+        }
+        else {
+            (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.error) === null || _c === void 0 ? void 0 : _c.call(_b, ERROR_MESSAGES.CONFIG_DATA_NOT_VALID);
         }
     }
     /**
@@ -202,8 +219,15 @@ class DataManager {
      * @return {Experience | RuleError}
      */
     matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField = 'key', environment = this._environment) {
-        var _a;
-        // eslint-disable-line
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.matchRulesByField()', {
+            visitorId: visitorId,
+            identity: identity,
+            visitorProperties: visitorProperties,
+            locationProperties: locationProperties,
+            identityField: identityField,
+            environment: environment
+        });
         // Retrieve the experience
         const experience = this._getEntityByField(identity, 'experiences', identityField);
         // Retrieve archived experiences
@@ -250,6 +274,12 @@ class DataManager {
                     // Empty experience locations list or unset Site Area means there's no restriction for the location
                     locationMatched = true;
                 }
+                if (locationMatched) {
+                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, MESSAGES.LOCATION_MATCH);
+                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.debug) === null || _f === void 0 ? void 0 : _f.call(_e, {
+                        locationProperties: locationProperties
+                    });
+                }
             }
             // Validate locationProperties against site area rules
             if (!locationProperties || locationMatched) {
@@ -281,12 +311,47 @@ class DataManager {
                     matchedSegmentations.length ||
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
+                    if (matchedAudiences.length) {
+                        (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, MESSAGES.AUDIENCE_MATCH);
+                        (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.debug) === null || _k === void 0 ? void 0 : _k.call(_j, {
+                            visitorProperties: visitorProperties
+                        });
+                    }
+                    if (matchedSegmentations.length) {
+                        (_m = (_l = this._loggerManager) === null || _l === void 0 ? void 0 : _l.info) === null || _m === void 0 ? void 0 : _m.call(_l, MESSAGES.SEGMENTATION_MATCH);
+                    }
                     // And experience has variations
-                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_a = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _a === void 0 ? void 0 : _a.length)) {
+                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_o = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _o === void 0 ? void 0 : _o.length)) {
                         return experience;
                     }
+                    else {
+                        (_q = (_p = this._loggerManager) === null || _p === void 0 ? void 0 : _p.debug) === null || _q === void 0 ? void 0 : _q.call(_p, MESSAGES.VARIATIONS_NOT_FOUND, {
+                            visitorProperties: visitorProperties,
+                            audiences: audiences
+                        });
+                    }
+                }
+                else {
+                    (_s = (_r = this._loggerManager) === null || _r === void 0 ? void 0 : _r.debug) === null || _s === void 0 ? void 0 : _s.call(_r, MESSAGES.RULES_NOT_MATCH, {
+                        visitorProperties: visitorProperties,
+                        audiences: audiences
+                    });
                 }
             }
+            else {
+                (_u = (_t = this._loggerManager) === null || _t === void 0 ? void 0 : _t.debug) === null || _u === void 0 ? void 0 : _u.call(_t, MESSAGES.LOCATION_NOT_MATCH, {
+                    locationProperties: locationProperties,
+                    [(experience === null || experience === void 0 ? void 0 : experience.locations)
+                        ? 'experiences[].variations[].locations'
+                        : 'experiences[].variations[].site_area']: (experience === null || experience === void 0 ? void 0 : experience.locations) || (experience === null || experience === void 0 ? void 0 : experience.site_area) || ''
+                });
+            }
+        }
+        else {
+            (_w = (_v = this._loggerManager) === null || _v === void 0 ? void 0 : _v.debug) === null || _w === void 0 ? void 0 : _w.call(_v, MESSAGES.EXPERIENCE_NOT_FOUND, {
+                identity: identity,
+                identityField: identityField
+            });
         }
         return null;
     }
@@ -302,7 +367,15 @@ class DataManager {
      * @private
      */
     _getBucketingByField(visitorId, identity, visitorProperties, locationProperties, identityField = 'key', environment = this._environment) {
-        // eslint-disable-line
+        var _a, _b;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager._getBucketingByField()', {
+            visitorId: visitorId,
+            identity: identity,
+            visitorProperties: visitorProperties,
+            locationProperties: locationProperties,
+            identityField: identityField,
+            environment: environment
+        });
         // Retrieve the experience
         const experience = this.matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField, environment);
         if (experience) {
@@ -321,7 +394,7 @@ class DataManager {
      * @private
      */
     _retrieveBucketing(visitorId, experience) {
-        var _a, _b;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
         if (!visitorId || !experience)
             return null;
         if (!(experience === null || experience === void 0 ? void 0 : experience.id))
@@ -333,16 +406,29 @@ class DataManager {
         const { bucketing, locations, segments } = this.getLocalStore(visitorId) || {};
         const { [experience.id.toString()]: variationId } = bucketing || {};
         if (variationId &&
-            (variation = this.retrieveVariation(experience.id, variationId))) ;
+            (variation = this.retrieveVariation(experience.id, variationId))) {
+            // If it's found log debug info. The return value will be formed next step
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.BUCKETED_VISITOR_FOUND);
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.debug) === null || _d === void 0 ? void 0 : _d.call(_c, {
+                storeKey: storeKey,
+                visitorId: visitorId,
+                variationId: variationId
+            });
+        }
         else {
             // Try to find a bucketed visitor in dataStore
-            let { bucketing: { [experience.id.toString()]: variationId } = {} } = ((_b = (_a = this.dataStoreManager) === null || _a === void 0 ? void 0 : _a.get) === null || _b === void 0 ? void 0 : _b.call(_a, storeKey)) || {};
+            let { bucketing: { [experience.id.toString()]: variationId } = {} } = ((_f = (_e = this.dataStoreManager) === null || _e === void 0 ? void 0 : _e.get) === null || _f === void 0 ? void 0 : _f.call(_e, storeKey)) || {};
             if (variationId &&
                 (variation = this.retrieveVariation(experience.id, variationId))) {
                 // Store the data in local variable
                 this.putLocalStore(visitorId, Object.assign(Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (locations ? { locations } : {})), (segments ? { segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
-                // eslint-disable-line
+                (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, MESSAGES.BUCKETED_VISITOR_FOUND);
+                (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.debug) === null || _k === void 0 ? void 0 : _k.call(_j, {
+                    storeKey: storeKey,
+                    visitorId: visitorId,
+                    variationId: variationId
+                });
             }
             else {
                 // Build buckets where key is variation id and value is traffic distribution
@@ -354,6 +440,7 @@ class DataManager {
                 // Select bucket based for provided visitor id
                 variationId = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId) {
+                    (_m = (_l = this._loggerManager) === null || _l === void 0 ? void 0 : _l.info) === null || _m === void 0 ? void 0 : _m.call(_l, MESSAGES.BUCKETED_VISITOR);
                     // Store the data in local variable
                     const storeData = Object.assign(Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (locations ? { locations } : {})), (segments ? { segments } : {}));
                     this.putLocalStore(visitorId, storeData);
@@ -369,9 +456,17 @@ class DataManager {
                         data: bucketingEvent
                     };
                     this._apiManager.enqueue(visitorId, visitorEvent, segments);
-                    // eslint-disable-line
+                    (_p = (_o = this._loggerManager) === null || _o === void 0 ? void 0 : _o.trace) === null || _p === void 0 ? void 0 : _p.call(_o, 'DataManager._retrieveBucketing()', {
+                        visitorEvent
+                    });
                     // Retrieve and return variation
                     variation = this.retrieveVariation(experience.id, variationId);
+                }
+                else {
+                    (_r = (_q = this._loggerManager) === null || _q === void 0 ? void 0 : _q.error) === null || _r === void 0 ? void 0 : _r.call(_q, ERROR_MESSAGES.UNABLE_TO_SELECT_BUCKET_FOR_VISITOR, {
+                        visitorId: visitorId,
+                        experience: experience
+                    });
                 }
             }
         }
@@ -435,8 +530,11 @@ class DataManager {
      * @returns {Array<Record<string, any> | RuleError>}
      */
     selectLocations(visitorId, items, locationProperties) {
-        var _a;
-        // eslint-disable-line
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.selectLocations()', {
+            items: items,
+            locationProperties: locationProperties
+        });
         // Get locations from DataStore
         const storeData = this.getLocalStore(visitorId) || {};
         const { bucketing, locations = [], segments } = storeData;
@@ -444,7 +542,7 @@ class DataManager {
         let match;
         if (arrayNotEmpty(items)) {
             for (let i = 0, length = items.length; i < length; i++) {
-                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
+                if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
                     continue;
                 match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
                 if (match === true && !locations.includes(items[i].id.toString())) {
@@ -458,6 +556,7 @@ class DataManager {
                         }
                     }, null, true);
                     matchedRecords.push(items[i]);
+                    (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, MESSAGES.LOCATION_ACTIVE);
                 }
                 else if (match !== false) {
                     // catch rule errors
@@ -475,12 +574,15 @@ class DataManager {
                     }, null, true);
                     const locationIndex = locations.findIndex((location) => location === items[i].id.toString());
                     locations.splice(locationIndex, 1);
+                    (_g = (_f = this._loggerManager) === null || _f === void 0 ? void 0 : _f.info) === null || _g === void 0 ? void 0 : _g.call(_f, MESSAGES.LOCATION_INACTIVE);
                 }
             }
         }
         // Store the data in local variable
         this.putLocalStore(visitorId, Object.assign(Object.assign(Object.assign({}, (bucketing ? { bucketing } : {})), { locations }), (segments ? { segments } : {})));
-        // eslint-disable-line
+        (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.debug) === null || _j === void 0 ? void 0 : _j.call(_h, 'DataManager.selectLocations()', {
+            matchedRecords: matchedRecords
+        });
         return matchedRecords;
     }
     /**
@@ -516,11 +618,12 @@ class DataManager {
      * @param {SegmentsData} segments
      */
     convert(visitorId, goalId, goalRule, goalData, segments) {
+        var _a, _b, _c, _d, _e, _f;
         const goal = typeof goalId === 'string'
             ? this.getEntity(goalId, 'goals')
             : this.getEntityById(goalId, 'goals');
         if (!(goal === null || goal === void 0 ? void 0 : goal.id)) {
-            // eslint-disable-line
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.error) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.GOAL_NOT_FOUND);
             return;
         }
         if (goalRule) {
@@ -531,7 +634,7 @@ class DataManager {
             if (Object.values(RuleError).includes(ruleMatched))
                 return ruleMatched;
             if (!ruleMatched) {
-                // eslint-disable-line
+                (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.error) === null || _d === void 0 ? void 0 : _d.call(_c, MESSAGES.GOAL_RULE_NOT_MATCH);
                 return;
             }
         }
@@ -560,7 +663,9 @@ class DataManager {
             };
             this._apiManager.enqueue(visitorId, event, segments);
         }
-        // eslint-disable-line
+        (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.trace) === null || _f === void 0 ? void 0 : _f.call(_e, 'DataManager.convert()', {
+            event
+        });
     }
     /**
      * Get audiences that meet the visitorProperties
@@ -569,13 +674,16 @@ class DataManager {
      * @return {Array<Record<string, any> | RuleError>}
      */
     filterMatchedRecordsWithRule(items, visitorProperties) {
-        var _a;
-        // eslint-disable-line
+        var _a, _b, _c, _d, _e;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.filterMatchedRecordsWithRule()', {
+            items: items,
+            visitorProperties: visitorProperties
+        });
         const matchedRecords = [];
         let match;
         if (arrayNotEmpty(items)) {
             for (let i = 0, length = items.length; i < length; i++) {
-                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
+                if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.rules))
                     continue;
                 match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules);
                 if (match === true) {
@@ -587,7 +695,9 @@ class DataManager {
                 }
             }
         }
-        // eslint-disable-line
+        (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.debug) === null || _e === void 0 ? void 0 : _e.call(_d, 'DataManager.filterMatchedRecordsWithRule()', {
+            matchedRecords: matchedRecords
+        });
         return matchedRecords;
     }
     /**
@@ -597,8 +707,11 @@ class DataManager {
      * @return {Array<Record<string, any>>}
      */
     filterMatchedCustomSegments(items, visitorId) {
-        var _a;
-        // eslint-disable-line
+        var _a, _b, _c, _d, _e;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.filterMatchedCustomSegments()', {
+            items: items,
+            visitorId: visitorId
+        });
         // Check that custom segments are matched
         const storeData = this.getLocalStore(visitorId) || {};
         // Get custom segments ID from DataStore
@@ -606,14 +719,16 @@ class DataManager {
         const matchedRecords = [];
         if (arrayNotEmpty(items)) {
             for (let i = 0, length = items.length; i < length; i++) {
-                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.id))
+                if (!((_c = items === null || items === void 0 ? void 0 : items[i]) === null || _c === void 0 ? void 0 : _c.id))
                     continue;
                 if (customSegments.includes(items[i].id)) {
                     matchedRecords.push(items[i]);
                 }
             }
         }
-        // eslint-disable-line
+        (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.debug) === null || _e === void 0 ? void 0 : _e.call(_d, 'DataManager.filterMatchedCustomSegments()', {
+            matchedRecords: matchedRecords
+        });
         return matchedRecords;
     }
     /**
@@ -622,11 +737,15 @@ class DataManager {
      * @return {Array<Entity | Id>}
      */
     getEntitiesList(entityType) {
+        var _a, _b;
         let list = [];
         if (this._dataEntities.indexOf(entityType) !== -1) {
             list = objectDeepValue(this._data, entityType) || [];
         }
-        // eslint-disable-line
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.getEntitiesList()', {
+            entityType: entityType,
+            list: list
+        });
         return list;
     }
     /**
@@ -650,12 +769,16 @@ class DataManager {
      * @private
      */
     _getEntityByField(identity, entityType, identityField = 'key') {
-        var _a;
-        // eslint-disable-line
+        var _a, _b, _c;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager._getEntityByField()', {
+            identity: identity,
+            entityType: entityType,
+            identityField: identityField
+        });
         const list = this.getEntitiesList(entityType);
         if (arrayNotEmpty(list)) {
             for (let i = 0, length = list.length; i < length; i++) {
-                if (list[i] && String((_a = list[i]) === null || _a === void 0 ? void 0 : _a[identityField]) === String(identity)) {
+                if (list[i] && String((_c = list[i]) === null || _c === void 0 ? void 0 : _c[identityField]) === String(identity)) {
                     return list[i];
                 }
             }
@@ -724,15 +847,18 @@ class DataManager {
      * @return {Array<Record<string, any>>}
      */
     getItemsByIds(ids, path) {
-        var _a, _b;
-        // eslint-disable-line
+        var _a, _b, _c, _d;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'DataManager.getItemsByIds()', {
+            ids: ids,
+            path: path
+        });
         const items = [];
         if (arrayNotEmpty(ids)) {
             const list = this.getEntitiesList(path);
             if (arrayNotEmpty(list)) {
                 for (let i = 0, length = list.length; i < length; i++) {
-                    if (ids.indexOf(Number((_a = list[i]) === null || _a === void 0 ? void 0 : _a.id)) !== -1 ||
-                        ids.indexOf(String((_b = list[i]) === null || _b === void 0 ? void 0 : _b.id)) !== -1) {
+                    if (ids.indexOf(Number((_c = list[i]) === null || _c === void 0 ? void 0 : _c.id)) !== -1 ||
+                        ids.indexOf(String((_d = list[i]) === null || _d === void 0 ? void 0 : _d.id)) !== -1) {
                         items.push(list[i]);
                     }
                 }

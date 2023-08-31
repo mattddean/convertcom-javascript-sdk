@@ -24,6 +24,7 @@ class RuleManager {
      * @param {LogManagerInterface=} dependencies.loggerManager
      */
     constructor(config, { loggerManager } = {}) {
+        var _a, _b;
         this._comparisonProcessor = jsSdkUtils.Comparisons;
         this._negation = DEFAULT_NEGATION;
         this._keys_case_sensitive = DEFAULT_KEYS_CASE_SENSITIVE;
@@ -31,7 +32,7 @@ class RuleManager {
         this._comparisonProcessor = jsSdkUtils.objectDeepValue(config, 'rules.comparisonProcessor', jsSdkUtils.Comparisons);
         this._negation = String(jsSdkUtils.objectDeepValue(config, 'rules.negation', DEFAULT_NEGATION)).valueOf();
         this._keys_case_sensitive = jsSdkUtils.objectDeepValue(config, 'rules.keys_case_sensitive', DEFAULT_KEYS_CASE_SENSITIVE, true);
-        // eslint-disable-line
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.RULE_CONSTRUCTOR, this);
     }
     /**
      * Setter for comparison processor
@@ -60,7 +61,11 @@ class RuleManager {
      * @return {boolean | RuleError}
      */
     isRuleMatched(data, ruleSet) {
-        // eslint-disable-line
+        var _a, _b, _c, _d;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager.isRuleMatched()', {
+            data: data,
+            ruleSet: ruleSet
+        });
         // Top OR level
         let match;
         if (Object.prototype.hasOwnProperty.call(ruleSet, 'OR') &&
@@ -72,6 +77,9 @@ class RuleManager {
                 }
             }
         }
+        else {
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.warn) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+        }
         return false;
     }
     /**
@@ -80,7 +88,10 @@ class RuleManager {
      * @return {boolean}
      */
     isValidRule(rule) {
-        // eslint-disable-line
+        var _a, _b;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager.isValidRule()', {
+            rule: rule
+        });
         return (Object.prototype.hasOwnProperty.call(rule, 'matching') &&
             typeof rule.matching === 'object' &&
             Object.prototype.hasOwnProperty.call(rule.matching, 'match_type') &&
@@ -97,6 +108,7 @@ class RuleManager {
      * @private
      */
     _processAND(data, rulesSubset) {
+        var _a, _b;
         // Second AND level
         let match;
         if (Object.prototype.hasOwnProperty.call(rulesSubset, 'AND') &&
@@ -109,6 +121,9 @@ class RuleManager {
             }
             return match;
         }
+        else {
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+        }
         return false;
     }
     /**
@@ -119,6 +134,7 @@ class RuleManager {
      * @private
      */
     _processORWHEN(data, rulesSubset) {
+        var _a, _b;
         // Third OR level. Called OR_WHEN.
         let match;
         if (Object.prototype.hasOwnProperty.call(rulesSubset, 'OR_WHEN') &&
@@ -130,6 +146,9 @@ class RuleManager {
                 }
             }
         }
+        else {
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+        }
         return false;
     }
     /**
@@ -140,6 +159,7 @@ class RuleManager {
      * @private
      */
     _processRuleItem(data, rule) {
+        var _a, _b, _c, _d, _e, _f;
         if (this.isValidRule(rule)) {
             try {
                 const negation = rule.matching.negated || false;
@@ -177,13 +197,20 @@ class RuleManager {
                         }
                     }
                     else {
-                        // eslint-disable-line
+                        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager._processRule()', {
+                            warn: jsSdkEnums.ERROR_MESSAGES.RULE_DATA_NOT_VALID
+                        });
                     }
                 }
             }
             catch (error) {
-                // eslint-disable-line
+                (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.error) === null || _d === void 0 ? void 0 : _d.call(_c, 'RuleManager._processRule()', {
+                    error: error.message
+                });
             }
+        }
+        else {
+            (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.warn) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     }

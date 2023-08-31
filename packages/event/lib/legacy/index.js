@@ -30,8 +30,9 @@ var EventManager = /** @class */ (function () {
      * @param {function} fn Callback function
      */
     EventManager.prototype.on = function (event, fn) {
+        var _a, _b;
         (this._listeners[event] = this._listeners[event] || []).push(fn);
-        // eslint-disable-line
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'EventManage.on()', { event: event });
         if (Object.hasOwnProperty.call(this._deferred, event)) {
             this.fire(event, this._deferred[event].args, this._deferred[event].err);
         }
@@ -56,10 +57,16 @@ var EventManager = /** @class */ (function () {
      * @param {boolean=} deferred Allows to fire listeners which were subscribed after event is fired
      */
     EventManager.prototype.fire = function (event, args, err, deferred) {
+        var _a, _b;
         if (args === void 0) { args = null; }
         if (err === void 0) { err = null; }
         if (deferred === void 0) { deferred = false; }
-        // eslint-disable-line
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'EventManage.fire()', {
+            event: event,
+            args: args,
+            err: err,
+            deferred: deferred
+        });
         for (var k in this._listeners[event] || []) {
             if (Object.hasOwnProperty.call(this._listeners, event) &&
                 typeof this._listeners[event][k] === 'function') {

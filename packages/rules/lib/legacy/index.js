@@ -53,6 +53,7 @@ var RuleManager = /** @class */ (function () {
      */
     function RuleManager(config, _a) {
         var _b = _a === void 0 ? {} : _a, loggerManager = _b.loggerManager;
+        var _c, _d;
         this._comparisonProcessor = jsSdkUtils.Comparisons;
         this._negation = DEFAULT_NEGATION;
         this._keys_case_sensitive = DEFAULT_KEYS_CASE_SENSITIVE;
@@ -60,7 +61,7 @@ var RuleManager = /** @class */ (function () {
         this._comparisonProcessor = jsSdkUtils.objectDeepValue(config, 'rules.comparisonProcessor', jsSdkUtils.Comparisons);
         this._negation = String(jsSdkUtils.objectDeepValue(config, 'rules.negation', DEFAULT_NEGATION)).valueOf();
         this._keys_case_sensitive = jsSdkUtils.objectDeepValue(config, 'rules.keys_case_sensitive', DEFAULT_KEYS_CASE_SENSITIVE, true);
-        // eslint-disable-line
+        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.trace) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.RULE_CONSTRUCTOR, this);
     }
     Object.defineProperty(RuleManager.prototype, "comparisonProcessor", {
         /**
@@ -94,7 +95,11 @@ var RuleManager = /** @class */ (function () {
      * @return {boolean | RuleError}
      */
     RuleManager.prototype.isRuleMatched = function (data, ruleSet) {
-        // eslint-disable-line
+        var _a, _b, _c, _d;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager.isRuleMatched()', {
+            data: data,
+            ruleSet: ruleSet
+        });
         // Top OR level
         var match;
         if (Object.prototype.hasOwnProperty.call(ruleSet, 'OR') &&
@@ -106,6 +111,9 @@ var RuleManager = /** @class */ (function () {
                 }
             }
         }
+        else {
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.warn) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+        }
         return false;
     };
     /**
@@ -114,7 +122,10 @@ var RuleManager = /** @class */ (function () {
      * @return {boolean}
      */
     RuleManager.prototype.isValidRule = function (rule) {
-        // eslint-disable-line
+        var _a, _b;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager.isValidRule()', {
+            rule: rule
+        });
         return (Object.prototype.hasOwnProperty.call(rule, 'matching') &&
             typeof rule.matching === 'object' &&
             Object.prototype.hasOwnProperty.call(rule.matching, 'match_type') &&
@@ -131,6 +142,7 @@ var RuleManager = /** @class */ (function () {
      * @private
      */
     RuleManager.prototype._processAND = function (data, rulesSubset) {
+        var _a, _b;
         // Second AND level
         var match;
         if (Object.prototype.hasOwnProperty.call(rulesSubset, 'AND') &&
@@ -143,6 +155,9 @@ var RuleManager = /** @class */ (function () {
             }
             return match;
         }
+        else {
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+        }
         return false;
     };
     /**
@@ -153,6 +168,7 @@ var RuleManager = /** @class */ (function () {
      * @private
      */
     RuleManager.prototype._processORWHEN = function (data, rulesSubset) {
+        var _a, _b;
         // Third OR level. Called OR_WHEN.
         var match;
         if (Object.prototype.hasOwnProperty.call(rulesSubset, 'OR_WHEN') &&
@@ -163,6 +179,9 @@ var RuleManager = /** @class */ (function () {
                     return match;
                 }
             }
+        }
+        else {
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     };
@@ -175,6 +194,7 @@ var RuleManager = /** @class */ (function () {
      */
     RuleManager.prototype._processRuleItem = function (data, rule) {
         var e_1, _a, e_2, _b;
+        var _c, _d, _e, _f, _g, _h;
         if (this.isValidRule(rule)) {
             try {
                 var negation = rule.matching.negated || false;
@@ -185,8 +205,8 @@ var RuleManager = /** @class */ (function () {
                         if (data.constructor === Object) {
                             try {
                                 // Rule object has to have `key` field
-                                for (var _c = __values(Object.keys(data)), _d = _c.next(); !_d.done; _d = _c.next()) {
-                                    var key = _d.value;
+                                for (var _j = __values(Object.keys(data)), _k = _j.next(); !_k.done; _k = _j.next()) {
+                                    var key = _k.value;
                                     var k = this._keys_case_sensitive ? key : key.toLowerCase();
                                     var rule_k = this._keys_case_sensitive
                                         ? rule.key
@@ -199,7 +219,7 @@ var RuleManager = /** @class */ (function () {
                             catch (e_1_1) { e_1 = { error: e_1_1 }; }
                             finally {
                                 try {
-                                    if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+                                    if (_k && !_k.done && (_a = _j.return)) _a.call(_j);
                                 }
                                 finally { if (e_1) throw e_1.error; }
                             }
@@ -207,8 +227,8 @@ var RuleManager = /** @class */ (function () {
                         else if (rule === null || rule === void 0 ? void 0 : rule.rule_type) {
                             try {
                                 // Rule object has to have `rule_type` field
-                                for (var _e = __values(Object.getOwnPropertyNames(data.constructor.prototype)), _f = _e.next(); !_f.done; _f = _e.next()) {
-                                    var method = _f.value;
+                                for (var _l = __values(Object.getOwnPropertyNames(data.constructor.prototype)), _m = _l.next(); !_m.done; _m = _l.next()) {
+                                    var method = _m.value;
                                     if (method === 'constructor')
                                         continue;
                                     var rule_method = jsSdkUtils.camelCase("get ".concat(rule.rule_type.replace(/_/g, ' ')));
@@ -225,20 +245,27 @@ var RuleManager = /** @class */ (function () {
                             catch (e_2_1) { e_2 = { error: e_2_1 }; }
                             finally {
                                 try {
-                                    if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
+                                    if (_m && !_m.done && (_b = _l.return)) _b.call(_l);
                                 }
                                 finally { if (e_2) throw e_2.error; }
                             }
                         }
                     }
                     else {
-                        // eslint-disable-line
+                        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.warn) === null || _d === void 0 ? void 0 : _d.call(_c, 'RuleManager._processRule()', {
+                            warn: jsSdkEnums.ERROR_MESSAGES.RULE_DATA_NOT_VALID
+                        });
                     }
                 }
             }
             catch (error) {
-                // eslint-disable-line
+                (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.error) === null || _f === void 0 ? void 0 : _f.call(_e, 'RuleManager._processRule()', {
+                    error: error.message
+                });
             }
+        }
+        else {
+            (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.warn) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     };

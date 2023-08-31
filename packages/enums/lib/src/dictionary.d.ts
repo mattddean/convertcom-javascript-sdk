@@ -36,7 +36,13 @@ export declare const MESSAGES: {
     LOCATION_NOT_MATCH: string;
     RULES_NOT_MATCH: string;
     RULES_MATCH: string;
+    LOCATION_MATCH: string;
+    AUDIENCE_MATCH: string;
+    SEGMENTATION_MATCH: string;
+    LOCATION_ACTIVE: string;
+    LOCATION_INACTIVE: string;
     BUCKETED_VISITOR_FOUND: string;
+    BUCKETED_VISITOR: string;
     GOAL_NOT_FOUND: string;
     GOAL_RULE_NOT_MATCH: string;
     SEGMENTS_NOT_FOUND: string;

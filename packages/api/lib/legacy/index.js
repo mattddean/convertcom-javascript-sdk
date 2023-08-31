@@ -189,7 +189,10 @@ var ApiManager = /** @class */ (function () {
      * @param {SegmentsData} segments
      */
     ApiManager.prototype.enqueue = function (visitorId, eventRequest, segments) {
-        // eslint-disable-line
+        var _a, _b;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.enqueue()', {
+            eventRequest: eventRequest
+        });
         this._requestsQueue.push(visitorId, eventRequest, segments);
         if (this._requestsQueue.length === this.batchSize) {
             this.releaseQueue('size').then();
@@ -207,9 +210,12 @@ var ApiManager = /** @class */ (function () {
      */
     ApiManager.prototype.releaseQueue = function (reason) {
         var _this = this;
+        var _a, _b;
         if (!this._requestsQueue.length)
             return;
-        // eslint-disable-line
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.releaseQueue()', {
+            reason: reason || ''
+        });
         this.stopQueue();
         var payload = this._trackingEvent;
         payload.visitors = this._requestsQueue.items.slice();
@@ -226,11 +232,13 @@ var ApiManager = /** @class */ (function () {
             });
         })
             .catch(function (error) {
-            var _a, _b;
+            var _a, _b, _c, _d;
             // TODO: set an exponential backoff
-            // eslint-disable-line
+            (_b = (_a = _this._loggerManager) === null || _a === void 0 ? void 0 : _a.error) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.releaseQueue()', {
+                error: error.message
+            });
             _this.startQueue();
-            (_b = (_a = _this._eventManager) === null || _a === void 0 ? void 0 : _a.fire) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.SystemEvents.API_QUEUE_RELEASED, { reason: reason }, error);
+            (_d = (_c = _this._eventManager) === null || _c === void 0 ? void 0 : _c.fire) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.SystemEvents.API_QUEUE_RELEASED, { reason: reason }, error);
         });
     };
     /**
@@ -266,7 +274,10 @@ var ApiManager = /** @class */ (function () {
      */
     ApiManager.prototype.getConfigByKey = function (sdkKey) {
         var _this = this;
-        // eslint-disable-line
+        var _a, _b;
+        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.trace) === null || _b === void 0 ? void 0 : _b.call(_a, 'ApiManager.getConfigByKey()', {
+            sdkKey: sdkKey
+        });
         return new Promise(function (resolve, reject) {
             _this.request('get', {
                 base: _this._configEndpoint,

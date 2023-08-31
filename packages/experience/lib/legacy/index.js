@@ -1,5 +1,7 @@
 'use strict';
 
+var jsSdkEnums = require('@convertcom/js-sdk-enums');
+
 /**
  * Provides experiences specific logic
  * @category Modules
@@ -15,9 +17,10 @@ var ExperienceManager = /** @class */ (function () {
      */
     function ExperienceManager(config, _a) {
         var dataManager = _a.dataManager, loggerManager = _a.loggerManager;
+        var _b, _c;
         this._dataManager = dataManager;
         this._loggerManager = loggerManager;
-        // eslint-disable-line
+        (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.trace) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.EXPERIENCE_CONSTRUCTOR);
     }
     /**
      * Get a list of all entities
