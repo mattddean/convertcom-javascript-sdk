@@ -53,7 +53,6 @@ var RuleManager = /** @class */ (function () {
      */
     function RuleManager(config, _a) {
         var _b = _a === void 0 ? {} : _a, loggerManager = _b.loggerManager;
-        var _c, _d;
         this._comparisonProcessor = jsSdkUtils.Comparisons;
         this._negation = DEFAULT_NEGATION;
         this._keys_case_sensitive = DEFAULT_KEYS_CASE_SENSITIVE;
@@ -61,7 +60,7 @@ var RuleManager = /** @class */ (function () {
         this._comparisonProcessor = jsSdkUtils.objectDeepValue(config, 'rules.comparisonProcessor', jsSdkUtils.Comparisons);
         this._negation = String(jsSdkUtils.objectDeepValue(config, 'rules.negation', DEFAULT_NEGATION)).valueOf();
         this._keys_case_sensitive = jsSdkUtils.objectDeepValue(config, 'rules.keys_case_sensitive', DEFAULT_KEYS_CASE_SENSITIVE, true);
-        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.trace) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.RULE_CONSTRUCTOR, this);
+        // eslint-disable-line
     }
     Object.defineProperty(RuleManager.prototype, "comparisonProcessor", {
         /**
@@ -95,11 +94,8 @@ var RuleManager = /** @class */ (function () {
      * @return {boolean | RuleError}
      */
     RuleManager.prototype.isRuleMatched = function (data, ruleSet) {
-        var _a, _b, _c, _d;
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager.isRuleMatched()', {
-            data: data,
-            ruleSet: ruleSet
-        });
+        var _a, _b;
+        // eslint-disable-line
         // Top OR level
         var match;
         if (Object.prototype.hasOwnProperty.call(ruleSet, 'OR') &&
@@ -112,7 +108,7 @@ var RuleManager = /** @class */ (function () {
             }
         }
         else {
-            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.warn) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     };
@@ -122,10 +118,7 @@ var RuleManager = /** @class */ (function () {
      * @return {boolean}
      */
     RuleManager.prototype.isValidRule = function (rule) {
-        var _a, _b;
-        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.debug) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager.isValidRule()', {
-            rule: rule
-        });
+        // eslint-disable-line
         return (Object.prototype.hasOwnProperty.call(rule, 'matching') &&
             typeof rule.matching === 'object' &&
             Object.prototype.hasOwnProperty.call(rule.matching, 'match_type') &&
