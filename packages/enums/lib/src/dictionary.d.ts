@@ -38,9 +38,6 @@ export declare const MESSAGES: {
     AUDIENCE_NOT_MATCH: string;
     RULES_NOT_MATCH: string;
     RULES_MATCH: string;
-    LOCATION_MATCH: string;
-    AUDIENCE_MATCH: string;
-    SEGMENTATION_MATCH: string;
     LOCATION_ACTIVATED: string;
     LOCATION_DEACTIVATED: string;
     BUCKETED_VISITOR_FOUND: string;

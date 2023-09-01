@@ -213,7 +213,7 @@ class DataManager {
      * @return {Experience | RuleError}
      */
     matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField = 'key', environment = this._environment) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a;
         // eslint-disable-line
         // Retrieve the experience
         const experience = this._getEntityByField(identity, 'experiences', identityField);
@@ -261,10 +261,6 @@ class DataManager {
                     // Empty experience locations list or unset Site Area means there's no restriction for the location
                     locationMatched = true;
                 }
-                if (locationMatched) {
-                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.LOCATION_MATCH);
-                    // eslint-disable-line
-                }
             }
             // Validate locationProperties against site area rules
             if (!locationProperties || locationMatched) {
@@ -296,15 +292,8 @@ class DataManager {
                     matchedSegmentations.length ||
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
-                    if (matchedAudiences.length) {
-                        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, MESSAGES.AUDIENCE_MATCH);
-                        // eslint-disable-line
-                    }
-                    if (matchedSegmentations.length) {
-                        (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, MESSAGES.SEGMENTATION_MATCH);
-                    }
                     // And experience has variations
-                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_g = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _g === void 0 ? void 0 : _g.length)) {
+                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_a = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _a === void 0 ? void 0 : _a.length)) {
                         return experience;
                     }
                 }
