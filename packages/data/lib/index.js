@@ -359,7 +359,7 @@ class DataManager {
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
             // If it's found log debug info. The return value will be formed next step
-            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND);
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND.replace('#', `#${variationId}`));
             // eslint-disable-line
         }
         else {
@@ -370,7 +370,7 @@ class DataManager {
                 // Store the data in local variable
                 this.putLocalStore(visitorId, Object.assign(Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (locations ? { locations } : {})), (segments ? { segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
-                (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND);
+                (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND.replace('#', `#${variationId}`));
                 // eslint-disable-line
             }
             else {
@@ -383,7 +383,7 @@ class DataManager {
                 // Select bucket based for provided visitor id
                 variationId = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId) {
-                    (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.BUCKETED_VISITOR);
+                    (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.BUCKETED_VISITOR.replace('#', `#${variationId}`));
                     // Store the data in local variable
                     const storeData = Object.assign(Object.assign({ bucketing: Object.assign(Object.assign({}, bucketing), { [experience.id.toString()]: variationId }) }, (locations ? { locations } : {})), (segments ? { segments } : {}));
                     this.putLocalStore(visitorId, storeData);
@@ -494,7 +494,7 @@ class DataManager {
                         }
                     }, null, true);
                     matchedRecords.push(items[i]);
-                    (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.info) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.LOCATION_ACTIVE);
+                    (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.info) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', `#${items[i].id}`));
                 }
                 else if (match !== false) {
                     // catch rule errors
@@ -512,7 +512,7 @@ class DataManager {
                     }, null, true);
                     const locationIndex = locations.findIndex((location) => location === items[i].id.toString());
                     locations.splice(locationIndex, 1);
-                    (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.LOCATION_INACTIVE);
+                    (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${items[i].id}`));
                 }
             }
         }

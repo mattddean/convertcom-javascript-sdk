@@ -442,7 +442,7 @@ var DataManager = /** @class */ (function () {
         if (variationId &&
             (variation = this.retrieveVariation(experience.id, variationId))) {
             // If it's found log debug info. The return value will be formed next step
-            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND);
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND.replace('#', "#".concat(variationId)));
             // eslint-disable-line
         }
         else {
@@ -453,7 +453,7 @@ var DataManager = /** @class */ (function () {
                 // Store the data in local variable
                 this.putLocalStore(visitorId, __assign(__assign({ bucketing: __assign(__assign({}, bucketing), (_a = {}, _a[experience.id.toString()] = variationId_1, _a)) }, (locations ? { locations: locations } : {})), (segments ? { segments: segments } : {})));
                 // If it's found log debug info. The return value will be formed next step
-                (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND);
+                (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.BUCKETED_VISITOR_FOUND.replace('#', "#".concat(variationId_1)));
                 // eslint-disable-line
             }
             else {
@@ -466,7 +466,7 @@ var DataManager = /** @class */ (function () {
                 // Select bucket based for provided visitor id
                 variationId_1 = this._bucketingManager.getBucketForVisitor(buckets, visitorId);
                 if (variationId_1) {
-                    (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.info) === null || _k === void 0 ? void 0 : _k.call(_j, jsSdkEnums.MESSAGES.BUCKETED_VISITOR);
+                    (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.info) === null || _k === void 0 ? void 0 : _k.call(_j, jsSdkEnums.MESSAGES.BUCKETED_VISITOR.replace('#', "#".concat(variationId_1)));
                     // Store the data in local variable
                     var storeData = __assign(__assign({ bucketing: __assign(__assign({}, bucketing), (_b = {}, _b[experience.id.toString()] = variationId_1, _b)) }, (locations ? { locations: locations } : {})), (segments ? { segments: segments } : {}));
                     this.putLocalStore(visitorId, storeData);
@@ -588,7 +588,7 @@ var DataManager = /** @class */ (function () {
                         }
                     }, null, true);
                     matchedRecords.push(items[i]);
-                    (_c = (_b = this_1._loggerManager) === null || _b === void 0 ? void 0 : _b.info) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.LOCATION_ACTIVE);
+                    (_c = (_b = this_1._loggerManager) === null || _b === void 0 ? void 0 : _b.info) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', "#".concat(items[i].id)));
                 }
                 else if (match !== false) {
                     // catch rule errors
@@ -606,7 +606,7 @@ var DataManager = /** @class */ (function () {
                     }, null, true);
                     var locationIndex = locations.findIndex(function (location) { return location === items[i].id.toString(); });
                     locations.splice(locationIndex, 1);
-                    (_e = (_d = this_1._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.LOCATION_INACTIVE);
+                    (_e = (_d = this_1._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', "#".concat(items[i].id)));
                 }
             };
             var this_1 = this;

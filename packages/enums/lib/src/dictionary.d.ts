@@ -39,8 +39,8 @@ export declare const MESSAGES: {
     LOCATION_MATCH: string;
     AUDIENCE_MATCH: string;
     SEGMENTATION_MATCH: string;
-    LOCATION_ACTIVE: string;
-    LOCATION_INACTIVE: string;
+    LOCATION_ACTIVATED: string;
+    LOCATION_DEACTIVATED: string;
     BUCKETED_VISITOR_FOUND: string;
     BUCKETED_VISITOR: string;
     GOAL_NOT_FOUND: string;
