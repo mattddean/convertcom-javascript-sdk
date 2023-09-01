@@ -60,7 +60,7 @@ class RuleManager {
      * @return {boolean | RuleError}
      */
     isRuleMatched(data, ruleSet) {
-        var _a, _b;
+        var _a, _b, _c, _d, _e, _f;
         // eslint-disable-line
         // Top OR level
         let match;
@@ -68,13 +68,19 @@ class RuleManager {
             jsSdkUtils.arrayNotEmpty(ruleSet === null || ruleSet === void 0 ? void 0 : ruleSet.OR)) {
             for (let i = 0, l = ruleSet.OR.length; i < l; i++) {
                 match = this._processAND(data, ruleSet.OR[i]);
+                if (Object.values(jsSdkEnums.RuleError).includes(match)) {
+                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_ERROR, match);
+                }
+                else {
+                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, match === false ? jsSdkEnums.MESSAGES.RULES_NOT_MATCH : jsSdkEnums.MESSAGES.RULES_MATCH);
+                }
                 if (match !== false) {
                     return match;
                 }
             }
         }
         else {
-            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+            (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.warn) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     }

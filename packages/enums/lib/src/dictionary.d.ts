@@ -11,6 +11,7 @@ export declare const ERROR_MESSAGES: {
     SDK_OR_DATA_OBJECT_REQUIRED: string;
     RULE_NOT_VALID: string;
     RULE_DATA_NOT_VALID: string;
+    RULE_ERROR: string;
     DATA_STORE_NOT_VALID: string;
     VISITOR_ID_REQUIRED: string;
     GOAL_DATA_NOT_VALID: string;
@@ -34,6 +35,7 @@ export declare const MESSAGES: {
     DATA_CONSTRUCTOR: string;
     RULE_CONSTRUCTOR: string;
     LOCATION_NOT_MATCH: string;
+    AUDIENCE_NOT_MATCH: string;
     RULES_NOT_MATCH: string;
     RULES_MATCH: string;
     LOCATION_MATCH: string;
