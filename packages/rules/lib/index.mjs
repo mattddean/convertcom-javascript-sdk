@@ -67,10 +67,12 @@ class RuleManager {
             for (let i = 0, l = ruleSet.OR.length; i < l; i++) {
                 match = this._processAND(data, ruleSet.OR[i]);
                 if (Object.values(RuleError).includes(match)) {
-                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, ERROR_MESSAGES.RULE_ERROR, match);
+                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, ERROR_MESSAGES.RULE_ERROR);
                 }
                 else {
-                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, match === false ? MESSAGES.RULES_NOT_MATCH : MESSAGES.RULES_MATCH);
+                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, match === false
+                        ? MESSAGES.RULES_NOT_MATCH
+                        : MESSAGES.RULES_MATCH.replace('#', String(i)));
                 }
                 if (match !== false) {
                     return match;
@@ -105,7 +107,7 @@ class RuleManager {
      * @private
      */
     _processAND(data, rulesSubset) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         // Second AND level
         let match;
         if (Object.prototype.hasOwnProperty.call(rulesSubset, 'AND') &&
@@ -116,10 +118,13 @@ class RuleManager {
                     return false;
                 }
             }
+            if (match !== false) {
+                (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.RULES_MATCH_AND);
+            }
             return match;
         }
         else {
-            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, ERROR_MESSAGES.RULE_NOT_VALID);
+            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.warn) === null || _d === void 0 ? void 0 : _d.call(_c, ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     }
@@ -156,7 +161,7 @@ class RuleManager {
      * @private
      */
     _processRuleItem(data, rule) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         if (this.isValidRule(rule)) {
             try {
                 const negation = rule.matching.negated || false;
@@ -178,6 +183,7 @@ class RuleManager {
                         }
                         else if (rule === null || rule === void 0 ? void 0 : rule.rule_type) {
                             // Rule object has to have `rule_type` field
+                            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.RULE_MATCH_START.replace('#', rule.rule_type));
                             for (const method of Object.getOwnPropertyNames(data.constructor.prototype)) {
                                 if (method === 'constructor')
                                     continue;
@@ -194,20 +200,20 @@ class RuleManager {
                         }
                     }
                     else {
-                        (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.warn) === null || _b === void 0 ? void 0 : _b.call(_a, 'RuleManager._processRule()', {
+                        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.warn) === null || _d === void 0 ? void 0 : _d.call(_c, 'RuleManager._processRule()', {
                             warn: ERROR_MESSAGES.RULE_DATA_NOT_VALID
                         });
                     }
                 }
             }
             catch (error) {
-                (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.error) === null || _d === void 0 ? void 0 : _d.call(_c, 'RuleManager._processRule()', {
+                (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.error) === null || _f === void 0 ? void 0 : _f.call(_e, 'RuleManager._processRule()', {
                     error: error.message
                 });
             }
         }
         else {
-            (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.warn) === null || _f === void 0 ? void 0 : _f.call(_e, ERROR_MESSAGES.RULE_NOT_VALID);
+            (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.warn) === null || _h === void 0 ? void 0 : _h.call(_g, ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     }
