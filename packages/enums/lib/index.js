@@ -343,6 +343,8 @@ exports.BrowserType = void 0;
     BrowserType["OP"] = "OP";
     BrowserType["SF"] = "SF";
     BrowserType["EDG"] = "EDG";
+    BrowserType["MO"] = "MO";
+    BrowserType["NS"] = "NS";
     BrowserType["OTH"] = "OTH";
 })(exports.BrowserType || (exports.BrowserType = {}));
 
