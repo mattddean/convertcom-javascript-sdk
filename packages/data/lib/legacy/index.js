@@ -357,7 +357,7 @@ var DataManager = /** @class */ (function () {
                                 try {
                                     for (var matchedAudiences_1 = __values(matchedAudiences), matchedAudiences_1_1 = matchedAudiences_1.next(); !matchedAudiences_1_1.done; matchedAudiences_1_1 = matchedAudiences_1.next()) {
                                         var item = matchedAudiences_1_1.value;
-                                        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.AUDIENCE_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.AUDIENCE_MATCH.replace('#', item === null || item === void 0 ? void 0 : item[identityField]));
                                     }
                                 }
                                 catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -369,9 +369,6 @@ var DataManager = /** @class */ (function () {
                                 }
                             }
                         }
-                        else {
-                            (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.AUDIENCE_NOT_RESTRICTED);
-                        }
                         // Get attached segmentation audiences
                         segmentations = this.getItemsByIds(experience.audiences, 'segments');
                         if (segmentations.length) {
@@ -381,7 +378,7 @@ var DataManager = /** @class */ (function () {
                                 try {
                                     for (var matchedSegmentations_1 = __values(matchedSegmentations), matchedSegmentations_1_1 = matchedSegmentations_1.next(); !matchedSegmentations_1_1.done; matchedSegmentations_1_1 = matchedSegmentations_1.next()) {
                                         var item = matchedSegmentations_1_1.value;
-                                        (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                        (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', item === null || item === void 0 ? void 0 : item[identityField]));
                                     }
                                 }
                                 catch (e_2_1) { e_2 = { error: e_2_1 }; }
@@ -393,6 +390,9 @@ var DataManager = /** @class */ (function () {
                                 }
                             }
                         }
+                    }
+                    else {
+                        (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.AUDIENCE_NOT_RESTRICTED);
                     }
                 }
                 // If there are some matched audiences

@@ -276,12 +276,9 @@ class DataManager {
                                 return matchedErrors[0];
                             if (matchedAudiences.length) {
                                 for (const item of matchedAudiences) {
-                                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.AUDIENCE_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.AUDIENCE_MATCH.replace('#', item === null || item === void 0 ? void 0 : item[identityField]));
                                 }
                             }
-                        }
-                        else {
-                            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.AUDIENCE_NOT_RESTRICTED);
                         }
                         // Get attached segmentation audiences
                         segmentations = this.getItemsByIds(experience.audiences, 'segments');
@@ -290,10 +287,13 @@ class DataManager {
                             matchedSegmentations = this.filterMatchedCustomSegments(segmentations, visitorId);
                             if (matchedSegmentations.length) {
                                 for (const item of matchedSegmentations) {
-                                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', item === null || item === void 0 ? void 0 : item[identityField]));
                                 }
                             }
                         }
+                    }
+                    else {
+                        (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.AUDIENCE_NOT_RESTRICTED);
                     }
                 }
                 // If there are some matched audiences
