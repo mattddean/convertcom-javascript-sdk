@@ -314,7 +314,7 @@ var DataManager = /** @class */ (function () {
                     if (locations.length) {
                         // Validate locationProperties against locations rules
                         // and trigger activated/deactivated events
-                        matchedLocations = this.selectLocations(visitorId, locations, locationProperties);
+                        matchedLocations = this.selectLocations(visitorId, locations, locationProperties, identityField);
                         // Return rule errors if present
                         matchedErrors = matchedLocations.filter(function (match) {
                             return Object.values(jsSdkEnums.RuleError).includes(match);
@@ -593,12 +593,13 @@ var DataManager = /** @class */ (function () {
      * @param {Record<string, any>} locationProperties
      * @returns {Array<Record<string, any> | RuleError>}
      */
-    DataManager.prototype.selectLocations = function (visitorId, items, locationProperties) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
+    DataManager.prototype.selectLocations = function (visitorId, items, locationProperties, identityField) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+        if (identityField === void 0) { identityField = 'key'; }
         // eslint-disable-line
         // Get locations from DataStore
         var storeData = this.getLocalStore(visitorId) || {};
-        var bucketing = storeData.bucketing, _v = storeData.locations, locations = _v === void 0 ? [] : _v, segments = storeData.segments;
+        var bucketing = storeData.bucketing, _s = storeData.locations, locations = _s === void 0 ? [] : _s, segments = storeData.segments;
         var matchedRecords = [];
         var match;
         if (jsSdkUtils.arrayNotEmpty(items)) {
@@ -606,20 +607,20 @@ var DataManager = /** @class */ (function () {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     return "continue";
                 match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules);
-                var identitier = ((_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b.id) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c)) || ((_g = (_f = (_e = items === null || items === void 0 ? void 0 : items[i]) === null || _e === void 0 ? void 0 : _e.key) === null || _f === void 0 ? void 0 : _f.toString) === null || _g === void 0 ? void 0 : _g.call(_f));
+                var identity = (_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b[identityField]) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c);
                 if (match === true) {
-                    (_j = (_h = this_1._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.LOCATION_MATCH.replace('#', "#".concat(identitier)));
-                    if (!locations.includes(identitier)) {
-                        locations.push(identitier);
+                    (_f = (_e = this_1._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.LOCATION_MATCH.replace('#', "#".concat(identity)));
+                    if (!locations.includes(identity)) {
+                        locations.push(identity);
                         this_1._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_ACTIVATED, {
                             visitorId: visitorId,
                             location: {
-                                id: (_k = items === null || items === void 0 ? void 0 : items[i]) === null || _k === void 0 ? void 0 : _k.id,
-                                key: (_l = items === null || items === void 0 ? void 0 : items[i]) === null || _l === void 0 ? void 0 : _l.key,
-                                name: (_m = items === null || items === void 0 ? void 0 : items[i]) === null || _m === void 0 ? void 0 : _m.name
+                                id: (_g = items === null || items === void 0 ? void 0 : items[i]) === null || _g === void 0 ? void 0 : _g.id,
+                                key: (_h = items === null || items === void 0 ? void 0 : items[i]) === null || _h === void 0 ? void 0 : _h.key,
+                                name: (_j = items === null || items === void 0 ? void 0 : items[i]) === null || _j === void 0 ? void 0 : _j.name
                             }
                         }, null, true);
-                        (_p = (_o = this_1._loggerManager) === null || _o === void 0 ? void 0 : _o.info) === null || _p === void 0 ? void 0 : _p.call(_o, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', "#".concat(identitier)));
+                        (_l = (_k = this_1._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', "#".concat(identity)));
                     }
                     matchedRecords.push(items[i]);
                 }
@@ -627,18 +628,18 @@ var DataManager = /** @class */ (function () {
                     // catch rule errors
                     matchedRecords.push(match);
                 }
-                else if (match === false && locations.includes(identitier)) {
+                else if (match === false && locations.includes(identity)) {
                     this_1._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_DEACTIVATED, {
                         visitorId: visitorId,
                         location: {
-                            id: (_q = items === null || items === void 0 ? void 0 : items[i]) === null || _q === void 0 ? void 0 : _q.id,
-                            key: (_r = items === null || items === void 0 ? void 0 : items[i]) === null || _r === void 0 ? void 0 : _r.key,
-                            name: (_s = items === null || items === void 0 ? void 0 : items[i]) === null || _s === void 0 ? void 0 : _s.name
+                            id: (_m = items === null || items === void 0 ? void 0 : items[i]) === null || _m === void 0 ? void 0 : _m.id,
+                            key: (_o = items === null || items === void 0 ? void 0 : items[i]) === null || _o === void 0 ? void 0 : _o.key,
+                            name: (_p = items === null || items === void 0 ? void 0 : items[i]) === null || _p === void 0 ? void 0 : _p.name
                         }
                     }, null, true);
-                    var locationIndex = locations.findIndex(function (location) { return location === identitier; });
+                    var locationIndex = locations.findIndex(function (location) { return location === identity; });
                     locations.splice(locationIndex, 1);
-                    (_u = (_t = this_1._loggerManager) === null || _t === void 0 ? void 0 : _t.info) === null || _u === void 0 ? void 0 : _u.call(_t, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', "#".concat(identitier)));
+                    (_r = (_q = this_1._loggerManager) === null || _q === void 0 ? void 0 : _q.info) === null || _r === void 0 ? void 0 : _r.call(_q, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', "#".concat(identity)));
                 }
             };
             var this_1 = this;

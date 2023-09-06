@@ -13,7 +13,7 @@ export interface DataManagerInterface {
     putLocalStore(storeKey: Id, storeData: StoreData): any;
     getLocalStore(storeKey: Id): StoreData;
     getStoreKey(visitorId: Id): string;
-    selectLocations(visitorId: string, items: Array<Record<string, any>>, locationProperties: Record<string, any>): Array<Record<string, any> | RuleError>;
+    selectLocations(visitorId: string, items: Array<Record<string, any>>, locationProperties: Record<string, any>, identityField: IdentityField): Array<Record<string, any> | RuleError>;
     matchRulesByField(visitorId: string, identity: string | Id, visitorProperties: Record<string, any> | null, locationProperties: Record<string, any> | null, identityField: IdentityField, environment: string): Experience | RuleError;
     getBucketing(visitorId: Id, experienceKey: string, visitorProperties: Record<string, any> | null, locationProperties: Record<string, any> | null, environment?: string): BucketedVariation | RuleError;
     getBucketingById(visitorId: Id, experienceId: Id, visitorProperties: Record<string, any> | null, locationProperties: Record<string, any> | null, environment?: string): BucketedVariation | RuleError;

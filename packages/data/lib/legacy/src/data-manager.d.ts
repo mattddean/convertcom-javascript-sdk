@@ -120,7 +120,7 @@ export declare class DataManager implements DataManagerInterface {
      * @param {Record<string, any>} locationProperties
      * @returns {Array<Record<string, any> | RuleError>}
      */
-    selectLocations(visitorId: string, items: Array<Record<string, any>>, locationProperties: Record<string, any>): Array<Record<string, any> | RuleError>;
+    selectLocations(visitorId: string, items: Array<Record<string, any>>, locationProperties: Record<string, any>, identityField?: IdentityField): Array<Record<string, any> | RuleError>;
     /**
      * Retrieve variation for visitor
      * @param {string} visitorId

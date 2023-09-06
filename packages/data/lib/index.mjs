@@ -237,7 +237,7 @@ class DataManager {
                     if (locations.length) {
                         // Validate locationProperties against locations rules
                         // and trigger activated/deactivated events
-                        matchedLocations = this.selectLocations(visitorId, locations, locationProperties);
+                        matchedLocations = this.selectLocations(visitorId, locations, locationProperties, identityField);
                         // Return rule errors if present
                         matchedErrors = matchedLocations.filter((match) => Object.values(RuleError).includes(match));
                         if (matchedErrors.length)
@@ -478,8 +478,8 @@ class DataManager {
      * @param {Record<string, any>} locationProperties
      * @returns {Array<Record<string, any> | RuleError>}
      */
-    selectLocations(visitorId, items, locationProperties) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
+    selectLocations(visitorId, items, locationProperties, identityField = 'key') {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
         // eslint-disable-line
         // Get locations from DataStore
         const storeData = this.getLocalStore(visitorId) || {};
@@ -491,20 +491,20 @@ class DataManager {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     continue;
                 match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
-                const identitier = ((_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b.id) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c)) || ((_g = (_f = (_e = items === null || items === void 0 ? void 0 : items[i]) === null || _e === void 0 ? void 0 : _e.key) === null || _f === void 0 ? void 0 : _f.toString) === null || _g === void 0 ? void 0 : _g.call(_f));
+                const identity = (_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b[identityField]) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c);
                 if (match === true) {
-                    (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, MESSAGES.LOCATION_MATCH.replace('#', `#${identitier}`));
-                    if (!locations.includes(identitier)) {
-                        locations.push(identitier);
+                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, MESSAGES.LOCATION_MATCH.replace('#', `#${identity}`));
+                    if (!locations.includes(identity)) {
+                        locations.push(identity);
                         this._eventManager.fire(SystemEvents.LOCATION_ACTIVATED, {
                             visitorId,
                             location: {
-                                id: (_k = items === null || items === void 0 ? void 0 : items[i]) === null || _k === void 0 ? void 0 : _k.id,
-                                key: (_l = items === null || items === void 0 ? void 0 : items[i]) === null || _l === void 0 ? void 0 : _l.key,
-                                name: (_m = items === null || items === void 0 ? void 0 : items[i]) === null || _m === void 0 ? void 0 : _m.name
+                                id: (_g = items === null || items === void 0 ? void 0 : items[i]) === null || _g === void 0 ? void 0 : _g.id,
+                                key: (_h = items === null || items === void 0 ? void 0 : items[i]) === null || _h === void 0 ? void 0 : _h.key,
+                                name: (_j = items === null || items === void 0 ? void 0 : items[i]) === null || _j === void 0 ? void 0 : _j.name
                             }
                         }, null, true);
-                        (_p = (_o = this._loggerManager) === null || _o === void 0 ? void 0 : _o.info) === null || _p === void 0 ? void 0 : _p.call(_o, MESSAGES.LOCATION_ACTIVATED.replace('#', `#${identitier}`));
+                        (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, MESSAGES.LOCATION_ACTIVATED.replace('#', `#${identity}`));
                     }
                     matchedRecords.push(items[i]);
                 }
@@ -512,18 +512,18 @@ class DataManager {
                     // catch rule errors
                     matchedRecords.push(match);
                 }
-                else if (match === false && locations.includes(identitier)) {
+                else if (match === false && locations.includes(identity)) {
                     this._eventManager.fire(SystemEvents.LOCATION_DEACTIVATED, {
                         visitorId,
                         location: {
-                            id: (_q = items === null || items === void 0 ? void 0 : items[i]) === null || _q === void 0 ? void 0 : _q.id,
-                            key: (_r = items === null || items === void 0 ? void 0 : items[i]) === null || _r === void 0 ? void 0 : _r.key,
-                            name: (_s = items === null || items === void 0 ? void 0 : items[i]) === null || _s === void 0 ? void 0 : _s.name
+                            id: (_m = items === null || items === void 0 ? void 0 : items[i]) === null || _m === void 0 ? void 0 : _m.id,
+                            key: (_o = items === null || items === void 0 ? void 0 : items[i]) === null || _o === void 0 ? void 0 : _o.key,
+                            name: (_p = items === null || items === void 0 ? void 0 : items[i]) === null || _p === void 0 ? void 0 : _p.name
                         }
                     }, null, true);
-                    const locationIndex = locations.findIndex((location) => location === identitier);
+                    const locationIndex = locations.findIndex((location) => location === identity);
                     locations.splice(locationIndex, 1);
-                    (_u = (_t = this._loggerManager) === null || _t === void 0 ? void 0 : _t.info) === null || _u === void 0 ? void 0 : _u.call(_t, MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${identitier}`));
+                    (_r = (_q = this._loggerManager) === null || _q === void 0 ? void 0 : _q.info) === null || _r === void 0 ? void 0 : _r.call(_q, MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${identity}`));
                 }
             }
         }
