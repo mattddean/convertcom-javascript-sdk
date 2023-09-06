@@ -288,7 +288,7 @@ var DataManager = /** @class */ (function () {
      */
     DataManager.prototype.matchRulesByField = function (visitorId, identity, visitorProperties, locationProperties, identityField, environment) {
         var e_1, _a, e_2, _b;
-        var _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
+        var _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
         if (identityField === void 0) { identityField = 'key'; }
         if (environment === void 0) { environment = this._environment; }
         // eslint-disable-line
@@ -369,6 +369,9 @@ var DataManager = /** @class */ (function () {
                                 }
                             }
                         }
+                        else {
+                            (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.AUDIENCE_NOT_RESTRICTED);
+                        }
                         // Get attached segmentation audiences
                         segmentations = this.getItemsByIds(experience.audiences, 'segments');
                         if (segmentations.length) {
@@ -378,7 +381,7 @@ var DataManager = /** @class */ (function () {
                                 try {
                                     for (var matchedSegmentations_1 = __values(matchedSegmentations), matchedSegmentations_1_1 = matchedSegmentations_1.next(); !matchedSegmentations_1_1.done; matchedSegmentations_1_1 = matchedSegmentations_1.next()) {
                                         var item = matchedSegmentations_1_1.value;
-                                        (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                        (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
                                     }
                                 }
                                 catch (e_2_1) { e_2 = { error: e_2_1 }; }
@@ -399,26 +402,27 @@ var DataManager = /** @class */ (function () {
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
                     // And experience has variations
-                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_g = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _g === void 0 ? void 0 : _g.length)) {
+                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_j = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _j === void 0 ? void 0 : _j.length)) {
+                        (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.EXPERIENCE_RULES_MATCHED);
                         return experience;
                     }
                     else {
-                        (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND);
+                        (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND);
                         // eslint-disable-line
                     }
                 }
                 else {
-                    (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.AUDIENCE_NOT_MATCH);
+                    (_q = (_p = this._loggerManager) === null || _p === void 0 ? void 0 : _p.info) === null || _q === void 0 ? void 0 : _q.call(_p, jsSdkEnums.MESSAGES.AUDIENCE_NOT_MATCH);
                     // eslint-disable-line
                 }
             }
             else {
-                (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, jsSdkEnums.MESSAGES.LOCATION_NOT_MATCH);
+                (_s = (_r = this._loggerManager) === null || _r === void 0 ? void 0 : _r.info) === null || _s === void 0 ? void 0 : _s.call(_r, jsSdkEnums.MESSAGES.LOCATION_NOT_MATCH);
                 // eslint-disable-line
             }
         }
         else {
-            (_q = (_p = this._loggerManager) === null || _p === void 0 ? void 0 : _p.info) === null || _q === void 0 ? void 0 : _q.call(_p, jsSdkEnums.MESSAGES.EXPERIENCE_NOT_FOUND);
+            (_u = (_t = this._loggerManager) === null || _t === void 0 ? void 0 : _t.info) === null || _u === void 0 ? void 0 : _u.call(_t, jsSdkEnums.MESSAGES.EXPERIENCE_NOT_FOUND);
             // eslint-disable-line
         }
         return null;

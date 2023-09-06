@@ -25,6 +25,7 @@ export declare const MESSAGES: {
     CORE_INITIALIZED: string;
     EXPERIENCE_CONSTRUCTOR: string;
     EXPERIENCE_NOT_FOUND: string;
+    EXPERIENCE_RULES_MATCHED: string;
     VARIATIONS_NOT_FOUND: string;
     VARIATION_CHANGE_NOT_SUPPORTED: string;
     FEATURE_CONSTRUCTOR: string;
@@ -38,6 +39,7 @@ export declare const MESSAGES: {
     LOCATION_NOT_MATCH: string;
     AUDIENCE_MATCH: string;
     AUDIENCE_NOT_MATCH: string;
+    AUDIENCE_NOT_RESTRICTED: string;
     SEGMENTATION_MATCH: string;
     RULE_NOT_MATCH: string;
     RULE_MATCH: string;

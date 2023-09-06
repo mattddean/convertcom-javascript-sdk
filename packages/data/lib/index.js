@@ -215,7 +215,7 @@ class DataManager {
      * @return {Experience | RuleError}
      */
     matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField = 'key', environment = this._environment) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
         // eslint-disable-line
         // Retrieve the experience
         const experience = this._getEntityByField(identity, 'experiences', identityField);
@@ -280,6 +280,9 @@ class DataManager {
                                 }
                             }
                         }
+                        else {
+                            (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.AUDIENCE_NOT_RESTRICTED);
+                        }
                         // Get attached segmentation audiences
                         segmentations = this.getItemsByIds(experience.audiences, 'segments');
                         if (segmentations.length) {
@@ -287,7 +290,7 @@ class DataManager {
                             matchedSegmentations = this.filterMatchedCustomSegments(segmentations, visitorId);
                             if (matchedSegmentations.length) {
                                 for (const item of matchedSegmentations) {
-                                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
                                 }
                             }
                         }
@@ -300,26 +303,27 @@ class DataManager {
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
                     // And experience has variations
-                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_e = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _e === void 0 ? void 0 : _e.length)) {
+                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_g = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _g === void 0 ? void 0 : _g.length)) {
+                        (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.EXPERIENCE_RULES_MATCHED);
                         return experience;
                     }
                     else {
-                        (_g = (_f = this._loggerManager) === null || _f === void 0 ? void 0 : _f.info) === null || _g === void 0 ? void 0 : _g.call(_f, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND);
+                        (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND);
                         // eslint-disable-line
                     }
                 }
                 else {
-                    (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.AUDIENCE_NOT_MATCH);
+                    (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, jsSdkEnums.MESSAGES.AUDIENCE_NOT_MATCH);
                     // eslint-disable-line
                 }
             }
             else {
-                (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.LOCATION_NOT_MATCH);
+                (_q = (_p = this._loggerManager) === null || _p === void 0 ? void 0 : _p.info) === null || _q === void 0 ? void 0 : _q.call(_p, jsSdkEnums.MESSAGES.LOCATION_NOT_MATCH);
                 // eslint-disable-line
             }
         }
         else {
-            (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, jsSdkEnums.MESSAGES.EXPERIENCE_NOT_FOUND);
+            (_s = (_r = this._loggerManager) === null || _r === void 0 ? void 0 : _r.info) === null || _s === void 0 ? void 0 : _s.call(_r, jsSdkEnums.MESSAGES.EXPERIENCE_NOT_FOUND);
             // eslint-disable-line
         }
         return null;
