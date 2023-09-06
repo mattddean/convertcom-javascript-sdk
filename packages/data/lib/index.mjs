@@ -213,7 +213,7 @@ class DataManager {
      * @return {Experience | RuleError}
      */
     matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField = 'key', environment = this._environment) {
-        var _a;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         // eslint-disable-line
         // Retrieve the experience
         const experience = this._getEntityByField(identity, 'experiences', identityField);
@@ -227,27 +227,47 @@ class DataManager {
                 experience.environments.includes(environment)
             : true; // skip if no environments
         // Get locations from DataStore
-        const storeData = this.getLocalStore(visitorId) || {};
-        const { locations: selectedLocations = [] } = storeData;
+        // const storeData = this.getLocalStore(visitorId) || {};
+        // const {locations: selectedLocations = []} = storeData;
         let matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
             let locationMatched = false, matchedLocations = [];
             if (locationProperties) {
                 if (Array.isArray(experience === null || experience === void 0 ? void 0 : experience.locations) &&
                     experience.locations.length) {
-                    matchedLocations = experience.locations.filter((locationId) => selectedLocations.includes(locationId.toString()));
-                    if (!matchedLocations.length) {
-                        // Get attached locations
-                        const locations = this.getItemsByIds(experience.locations, 'locations');
-                        if (locations.length) {
-                            // Validate locationProperties against locations rules
-                            matchedLocations = this.filterMatchedRecordsWithRule(locations, locationProperties);
-                            // Return rule errors if present
-                            matchedErrors = matchedLocations.filter((match) => Object.values(RuleError).includes(match));
-                            if (matchedErrors.length)
-                                return matchedErrors[0];
-                        }
+                    // Get attached locations
+                    const locations = this.getItemsByIds(experience.locations, 'locations');
+                    if (locations.length) {
+                        // Validate locationProperties against locations rules
+                        // and trigger activated/deactivated events
+                        matchedLocations = this.selectLocations(visitorId, locations, locationProperties);
+                        // Return rule errors if present
+                        matchedErrors = matchedLocations.filter((match) => Object.values(RuleError).includes(match));
+                        if (matchedErrors.length)
+                            return matchedErrors[0];
                     }
+                    // matchedLocations = experience.locations.filter((locationId) =>
+                    //   selectedLocations.includes(locationId.toString())
+                    // );
+                    // if (!matchedLocations.length) {
+                    //   // Get attached locations
+                    //   const locations = this.getItemsByIds(
+                    //     experience.locations,
+                    //     'locations'
+                    //   ) as Array<Location>;
+                    //   if (locations.length) {
+                    //     // Validate locationProperties against locations rules
+                    //     matchedLocations = this.filterMatchedRecordsWithRule(
+                    //       locations,
+                    //       locationProperties
+                    //     );
+                    //     // Return rule errors if present
+                    //     matchedErrors = matchedLocations.filter((match) =>
+                    //       Object.values(RuleError).includes(match as RuleError)
+                    //     );
+                    //     if (matchedErrors.length) return matchedErrors[0] as RuleError;
+                    //   }
+                    // }
                     // If there are some matched locations
                     locationMatched = Boolean(matchedLocations.length);
                 }
@@ -277,12 +297,22 @@ class DataManager {
                             matchedErrors = matchedAudiences.filter((match) => Object.values(RuleError).includes(match));
                             if (matchedErrors.length)
                                 return matchedErrors[0];
+                            if (matchedAudiences.length) {
+                                for (const item of matchedAudiences) {
+                                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.AUDIENCE_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                }
+                            }
                         }
                         // Get attached segmentation audiences
                         segmentations = this.getItemsByIds(experience.audiences, 'segments');
                         if (segmentations.length) {
                             // Validate custom segments against segmentations
                             matchedSegmentations = this.filterMatchedCustomSegments(segmentations, visitorId);
+                            if (matchedSegmentations.length) {
+                                for (const item of matchedSegmentations) {
+                                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                }
+                            }
                         }
                     }
                 }
@@ -293,11 +323,27 @@ class DataManager {
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
                     // And experience has variations
-                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_a = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _a === void 0 ? void 0 : _a.length)) {
+                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_e = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _e === void 0 ? void 0 : _e.length)) {
                         return experience;
                     }
+                    else {
+                        (_g = (_f = this._loggerManager) === null || _f === void 0 ? void 0 : _f.info) === null || _g === void 0 ? void 0 : _g.call(_f, MESSAGES.VARIATIONS_NOT_FOUND);
+                        // eslint-disable-line
+                    }
+                }
+                else {
+                    (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, MESSAGES.AUDIENCE_NOT_MATCH);
+                    // eslint-disable-line
                 }
             }
+            else {
+                (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, MESSAGES.LOCATION_NOT_MATCH);
+                // eslint-disable-line
+            }
+        }
+        else {
+            (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, MESSAGES.EXPERIENCE_NOT_FOUND);
+            // eslint-disable-line
         }
         return null;
     }
@@ -458,7 +504,7 @@ class DataManager {
      * @returns {Array<Record<string, any> | RuleError>}
      */
     selectLocations(visitorId, items, locationProperties) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         // eslint-disable-line
         // Get locations from DataStore
         const storeData = this.getLocalStore(visitorId) || {};
@@ -467,7 +513,9 @@ class DataManager {
         let match;
         if (arrayNotEmpty(items)) {
             for (let i = 0, length = items.length; i < length; i++) {
-                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
+                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.id))
+                    continue;
+                if (!((_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b.rules))
                     continue;
                 match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
                 if (match === true && !locations.includes(items[i].id.toString())) {
@@ -476,12 +524,12 @@ class DataManager {
                         visitorId,
                         location: {
                             id: items[i].id,
-                            key: items[i].key,
-                            name: items[i].name
+                            key: (_c = items[i]) === null || _c === void 0 ? void 0 : _c.key,
+                            name: (_d = items[i]) === null || _d === void 0 ? void 0 : _d.name
                         }
                     }, null, true);
                     matchedRecords.push(items[i]);
-                    (_c = (_b = this._loggerManager) === null || _b === void 0 ? void 0 : _b.info) === null || _c === void 0 ? void 0 : _c.call(_b, MESSAGES.LOCATION_ACTIVATED.replace('#', `#${items[i].id}`));
+                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, MESSAGES.LOCATION_ACTIVATED.replace('#', `#${items[i].id}`));
                 }
                 else if (match !== false) {
                     // catch rule errors
@@ -493,13 +541,13 @@ class DataManager {
                         visitorId,
                         location: {
                             id: items[i].id,
-                            key: items[i].key,
-                            name: items[i].name
+                            key: (_g = items[i]) === null || _g === void 0 ? void 0 : _g.key,
+                            name: (_h = items[i]) === null || _h === void 0 ? void 0 : _h.name
                         }
                     }, null, true);
                     const locationIndex = locations.findIndex((location) => location === items[i].id.toString());
                     locations.splice(locationIndex, 1);
-                    (_e = (_d = this._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${items[i].id}`));
+                    (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.info) === null || _k === void 0 ? void 0 : _k.call(_j, MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${items[i].id}`));
                 }
             }
         }

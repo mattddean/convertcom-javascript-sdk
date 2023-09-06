@@ -107,8 +107,8 @@ var RuleManager = /** @class */ (function () {
                 }
                 else {
                     (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, match === false
-                        ? jsSdkEnums.MESSAGES.RULES_NOT_MATCH
-                        : jsSdkEnums.MESSAGES.RULES_MATCH.replace('#', String(i)));
+                        ? jsSdkEnums.MESSAGES.RULE_NOT_MATCH
+                        : jsSdkEnums.MESSAGES.RULE_MATCH.replace('#', String(i)));
                 }
                 if (match !== false) {
                     return match;
@@ -155,7 +155,7 @@ var RuleManager = /** @class */ (function () {
                 }
             }
             if (match !== false) {
-                (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.RULES_MATCH_AND);
+                (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.RULE_MATCH_AND);
             }
             return match;
         }

@@ -287,7 +287,8 @@ var DataManager = /** @class */ (function () {
      * @return {Experience | RuleError}
      */
     DataManager.prototype.matchRulesByField = function (visitorId, identity, visitorProperties, locationProperties, identityField, environment) {
-        var _a;
+        var e_1, _a, e_2, _b;
+        var _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
         if (identityField === void 0) { identityField = 'key'; }
         if (environment === void 0) { environment = this._environment; }
         // eslint-disable-line
@@ -303,31 +304,49 @@ var DataManager = /** @class */ (function () {
                 experience.environments.includes(environment)
             : true; // skip if no environments
         // Get locations from DataStore
-        var storeData = this.getLocalStore(visitorId) || {};
-        var _b = storeData.locations, selectedLocations = _b === void 0 ? [] : _b;
+        // const storeData = this.getLocalStore(visitorId) || {};
+        // const {locations: selectedLocations = []} = storeData;
         var matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
             var locationMatched = false, matchedLocations = [];
             if (locationProperties) {
                 if (Array.isArray(experience === null || experience === void 0 ? void 0 : experience.locations) &&
                     experience.locations.length) {
-                    matchedLocations = experience.locations.filter(function (locationId) {
-                        return selectedLocations.includes(locationId.toString());
-                    });
-                    if (!matchedLocations.length) {
-                        // Get attached locations
-                        var locations = this.getItemsByIds(experience.locations, 'locations');
-                        if (locations.length) {
-                            // Validate locationProperties against locations rules
-                            matchedLocations = this.filterMatchedRecordsWithRule(locations, locationProperties);
-                            // Return rule errors if present
-                            matchedErrors = matchedLocations.filter(function (match) {
-                                return Object.values(jsSdkEnums.RuleError).includes(match);
-                            });
-                            if (matchedErrors.length)
-                                return matchedErrors[0];
-                        }
+                    // Get attached locations
+                    var locations = this.getItemsByIds(experience.locations, 'locations');
+                    if (locations.length) {
+                        // Validate locationProperties against locations rules
+                        // and trigger activated/deactivated events
+                        matchedLocations = this.selectLocations(visitorId, locations, locationProperties);
+                        // Return rule errors if present
+                        matchedErrors = matchedLocations.filter(function (match) {
+                            return Object.values(jsSdkEnums.RuleError).includes(match);
+                        });
+                        if (matchedErrors.length)
+                            return matchedErrors[0];
                     }
+                    // matchedLocations = experience.locations.filter((locationId) =>
+                    //   selectedLocations.includes(locationId.toString())
+                    // );
+                    // if (!matchedLocations.length) {
+                    //   // Get attached locations
+                    //   const locations = this.getItemsByIds(
+                    //     experience.locations,
+                    //     'locations'
+                    //   ) as Array<Location>;
+                    //   if (locations.length) {
+                    //     // Validate locationProperties against locations rules
+                    //     matchedLocations = this.filterMatchedRecordsWithRule(
+                    //       locations,
+                    //       locationProperties
+                    //     );
+                    //     // Return rule errors if present
+                    //     matchedErrors = matchedLocations.filter((match) =>
+                    //       Object.values(RuleError).includes(match as RuleError)
+                    //     );
+                    //     if (matchedErrors.length) return matchedErrors[0] as RuleError;
+                    //   }
+                    // }
                     // If there are some matched locations
                     locationMatched = Boolean(matchedLocations.length);
                 }
@@ -359,12 +378,42 @@ var DataManager = /** @class */ (function () {
                             });
                             if (matchedErrors.length)
                                 return matchedErrors[0];
+                            if (matchedAudiences.length) {
+                                try {
+                                    for (var matchedAudiences_1 = __values(matchedAudiences), matchedAudiences_1_1 = matchedAudiences_1.next(); !matchedAudiences_1_1.done; matchedAudiences_1_1 = matchedAudiences_1.next()) {
+                                        var item = matchedAudiences_1_1.value;
+                                        (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.AUDIENCE_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                    }
+                                }
+                                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                                finally {
+                                    try {
+                                        if (matchedAudiences_1_1 && !matchedAudiences_1_1.done && (_a = matchedAudiences_1.return)) _a.call(matchedAudiences_1);
+                                    }
+                                    finally { if (e_1) throw e_1.error; }
+                                }
+                            }
                         }
                         // Get attached segmentation audiences
                         segmentations = this.getItemsByIds(experience.audiences, 'segments');
                         if (segmentations.length) {
                             // Validate custom segments against segmentations
                             matchedSegmentations = this.filterMatchedCustomSegments(segmentations, visitorId);
+                            if (matchedSegmentations.length) {
+                                try {
+                                    for (var matchedSegmentations_1 = __values(matchedSegmentations), matchedSegmentations_1_1 = matchedSegmentations_1.next(); !matchedSegmentations_1_1.done; matchedSegmentations_1_1 = matchedSegmentations_1.next()) {
+                                        var item = matchedSegmentations_1_1.value;
+                                        (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.SEGMENTATION_MATCH.replace('#', (item === null || item === void 0 ? void 0 : item.id) || (item === null || item === void 0 ? void 0 : item.key)));
+                                    }
+                                }
+                                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                                finally {
+                                    try {
+                                        if (matchedSegmentations_1_1 && !matchedSegmentations_1_1.done && (_b = matchedSegmentations_1.return)) _b.call(matchedSegmentations_1);
+                                    }
+                                    finally { if (e_2) throw e_2.error; }
+                                }
+                            }
                         }
                     }
                 }
@@ -375,11 +424,27 @@ var DataManager = /** @class */ (function () {
                     !audiences.length // Empty audiences list means there's no restriction for the audience
                 ) {
                     // And experience has variations
-                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_a = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _a === void 0 ? void 0 : _a.length)) {
+                    if ((experience === null || experience === void 0 ? void 0 : experience.variations) && ((_g = experience === null || experience === void 0 ? void 0 : experience.variations) === null || _g === void 0 ? void 0 : _g.length)) {
                         return experience;
                     }
+                    else {
+                        (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND);
+                        // eslint-disable-line
+                    }
+                }
+                else {
+                    (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.AUDIENCE_NOT_MATCH);
+                    // eslint-disable-line
                 }
             }
+            else {
+                (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, jsSdkEnums.MESSAGES.LOCATION_NOT_MATCH);
+                // eslint-disable-line
+            }
+        }
+        else {
+            (_q = (_p = this._loggerManager) === null || _p === void 0 ? void 0 : _p.info) === null || _q === void 0 ? void 0 : _q.call(_p, jsSdkEnums.MESSAGES.EXPERIENCE_NOT_FOUND);
+            // eslint-disable-line
         }
         return null;
     };
@@ -508,7 +573,7 @@ var DataManager = /** @class */ (function () {
      * @private
      */
     DataManager.prototype.putLocalStore = function (visitorId, storeData) {
-        var e_1, _a;
+        var e_3, _a;
         var storeKey = this.getStoreKey(visitorId);
         this._bucketedVisitors.set(storeKey, storeData);
         if (this._bucketedVisitors.size > this._localStoreLimit) {
@@ -520,12 +585,12 @@ var DataManager = /** @class */ (function () {
                     break;
                 }
             }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            catch (e_3_1) { e_3 = { error: e_3_1 }; }
             finally {
                 try {
                     if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                 }
-                finally { if (e_1) throw e_1.error; }
+                finally { if (e_3) throw e_3.error; }
             }
         }
     };
@@ -554,16 +619,18 @@ var DataManager = /** @class */ (function () {
      * @returns {Array<Record<string, any> | RuleError>}
      */
     DataManager.prototype.selectLocations = function (visitorId, items, locationProperties) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         // eslint-disable-line
         // Get locations from DataStore
         var storeData = this.getLocalStore(visitorId) || {};
-        var bucketing = storeData.bucketing, _f = storeData.locations, locations = _f === void 0 ? [] : _f, segments = storeData.segments;
+        var bucketing = storeData.bucketing, _l = storeData.locations, locations = _l === void 0 ? [] : _l, segments = storeData.segments;
         var matchedRecords = [];
         var match;
         if (jsSdkUtils.arrayNotEmpty(items)) {
             var _loop_1 = function (i, length_1) {
-                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
+                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.id))
+                    return "continue";
+                if (!((_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b.rules))
                     return "continue";
                 match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules);
                 if (match === true && !locations.includes(items[i].id.toString())) {
@@ -572,12 +639,12 @@ var DataManager = /** @class */ (function () {
                         visitorId: visitorId,
                         location: {
                             id: items[i].id,
-                            key: items[i].key,
-                            name: items[i].name
+                            key: (_c = items[i]) === null || _c === void 0 ? void 0 : _c.key,
+                            name: (_d = items[i]) === null || _d === void 0 ? void 0 : _d.name
                         }
                     }, null, true);
                     matchedRecords.push(items[i]);
-                    (_c = (_b = this_1._loggerManager) === null || _b === void 0 ? void 0 : _b.info) === null || _c === void 0 ? void 0 : _c.call(_b, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', "#".concat(items[i].id)));
+                    (_f = (_e = this_1._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', "#".concat(items[i].id)));
                 }
                 else if (match !== false) {
                     // catch rule errors
@@ -589,13 +656,13 @@ var DataManager = /** @class */ (function () {
                         visitorId: visitorId,
                         location: {
                             id: items[i].id,
-                            key: items[i].key,
-                            name: items[i].name
+                            key: (_g = items[i]) === null || _g === void 0 ? void 0 : _g.key,
+                            name: (_h = items[i]) === null || _h === void 0 ? void 0 : _h.name
                         }
                     }, null, true);
                     var locationIndex = locations.findIndex(function (location) { return location === items[i].id.toString(); });
                     locations.splice(locationIndex, 1);
-                    (_e = (_d = this_1._loggerManager) === null || _d === void 0 ? void 0 : _d.info) === null || _e === void 0 ? void 0 : _e.call(_d, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', "#".concat(items[i].id)));
+                    (_k = (_j = this_1._loggerManager) === null || _j === void 0 ? void 0 : _j.info) === null || _k === void 0 ? void 0 : _k.call(_j, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', "#".concat(items[i].id)));
                 }
             };
             var this_1 = this;

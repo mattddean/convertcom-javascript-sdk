@@ -34,11 +34,14 @@ export declare const MESSAGES: {
     BUCKETING_CONSTRUCTOR: string;
     DATA_CONSTRUCTOR: string;
     RULE_CONSTRUCTOR: string;
+    LOCATION_MATCH: string;
     LOCATION_NOT_MATCH: string;
+    AUDIENCE_MATCH: string;
     AUDIENCE_NOT_MATCH: string;
-    RULES_NOT_MATCH: string;
-    RULES_MATCH: string;
-    RULES_MATCH_AND: string;
+    SEGMENTATION_MATCH: string;
+    RULE_NOT_MATCH: string;
+    RULE_MATCH: string;
+    RULE_MATCH_AND: string;
     RULE_MATCH_START: string;
     LOCATION_ACTIVATED: string;
     LOCATION_DEACTIVATED: string;
