@@ -35,6 +35,7 @@ export declare const MESSAGES: {
     BUCKETING_CONSTRUCTOR: string;
     DATA_CONSTRUCTOR: string;
     RULE_CONSTRUCTOR: string;
+    PROCESSING_ENTITY: string;
     LOCATION_MATCH: string;
     LOCATION_NOT_MATCH: string;
     AUDIENCE_MATCH: string;

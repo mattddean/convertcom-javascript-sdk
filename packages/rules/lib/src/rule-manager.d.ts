@@ -1,5 +1,5 @@
 import { RuleManagerInterface } from './interfaces/rule-manager';
-import { Config, Rule, RuleSet } from '@convertcom/js-sdk-types';
+import { Config, IdentityField, Rule, RuleSet } from '@convertcom/js-sdk-types';
 import { LogManagerInterface } from '@convertcom/js-sdk-logger';
 import { RuleError } from '@convertcom/js-sdk-enums';
 /**
@@ -41,7 +41,7 @@ export declare class RuleManager implements RuleManagerInterface {
      * @param {RuleSet} ruleSet
      * @return {boolean | RuleError}
      */
-    isRuleMatched(data: Record<string, any>, ruleSet: RuleSet): boolean | RuleError;
+    isRuleMatched(data: Record<string, any>, ruleSet: RuleSet, entityType: string, field?: IdentityField): boolean | RuleError;
     /**
      * Check is rule object valid
      * @param {Rule} rule

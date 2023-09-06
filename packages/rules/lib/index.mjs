@@ -1,5 +1,5 @@
-import { Comparisons, objectDeepValue, arrayNotEmpty, camelCase } from '@convertcom/js-sdk-utils';
-import { RuleError, ERROR_MESSAGES, MESSAGES } from '@convertcom/js-sdk-enums';
+import { Comparisons, objectDeepValue, camelCase, arrayNotEmpty } from '@convertcom/js-sdk-utils';
+import { MESSAGES, RuleError, ERROR_MESSAGES } from '@convertcom/js-sdk-enums';
 
 /*!
  * Convert JS SDK
@@ -57,9 +57,17 @@ class RuleManager {
      * @param {RuleSet} ruleSet
      * @return {boolean | RuleError}
      */
-    isRuleMatched(data, ruleSet) {
-        var _a, _b, _c, _d, _e, _f;
+    isRuleMatched(data, ruleSet, entityType, field = 'id') {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         // eslint-disable-line
+        if (entityType) {
+            if (data === null || data === void 0 ? void 0 : data[field]) {
+                (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, MESSAGES.PROCESSING_ENTITY.replace('#', `${camelCase(entityType)} #${data === null || data === void 0 ? void 0 : data[field]}`));
+            }
+            else {
+                (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, MESSAGES.PROCESSING_ENTITY.replace('#', camelCase(entityType)));
+            }
+        }
         // Top OR level
         let match;
         if (Object.prototype.hasOwnProperty.call(ruleSet, 'OR') &&
@@ -67,10 +75,10 @@ class RuleManager {
             for (let i = 0, l = ruleSet.OR.length; i < l; i++) {
                 match = this._processAND(data, ruleSet.OR[i]);
                 if (Object.values(RuleError).includes(match)) {
-                    (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, ERROR_MESSAGES.RULE_ERROR);
+                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, ERROR_MESSAGES.RULE_ERROR);
                 }
                 else {
-                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, match === false
+                    (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, match === false
                         ? MESSAGES.RULE_NOT_MATCH
                         : MESSAGES.RULE_MATCH.replace('#', String(i)));
                 }
@@ -80,7 +88,7 @@ class RuleManager {
             }
         }
         else {
-            (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.warn) === null || _f === void 0 ? void 0 : _f.call(_e, ERROR_MESSAGES.RULE_NOT_VALID);
+            (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.warn) === null || _k === void 0 ? void 0 : _k.call(_j, ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     }

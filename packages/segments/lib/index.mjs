@@ -58,7 +58,7 @@ class SegmentsManager {
         let segmentsMatched = false;
         for (const segment of segments) {
             if (segmentRule && !segmentsMatched) {
-                segmentsMatched = this._ruleManager.isRuleMatched(segmentRule, segment === null || segment === void 0 ? void 0 : segment.rules);
+                segmentsMatched = this._ruleManager.isRuleMatched(segmentRule, segment === null || segment === void 0 ? void 0 : segment.rules, 'segments');
                 // Return rule errors if present
                 if (Object.values(RuleError).includes(segmentsMatched))
                     return segmentsMatched;

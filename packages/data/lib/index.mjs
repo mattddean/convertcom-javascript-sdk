@@ -247,7 +247,7 @@ class DataManager {
                     locationMatched = Boolean(matchedLocations.length);
                 }
                 else if (experience === null || experience === void 0 ? void 0 : experience.site_area) {
-                    locationMatched = this._ruleManager.isRuleMatched(locationProperties, experience.site_area);
+                    locationMatched = this._ruleManager.isRuleMatched(locationProperties, experience.site_area, 'SiteArea');
                     // Return rule errors if present
                     if (Object.values(RuleError).includes(locationMatched))
                         return locationMatched;
@@ -267,7 +267,7 @@ class DataManager {
                         audiences = this.getItemsByIds(experience.audiences, 'audiences');
                         if (audiences.length) {
                             // Validate visitorProperties against audiences rules
-                            matchedAudiences = this.filterMatchedRecordsWithRule(audiences, visitorProperties);
+                            matchedAudiences = this.filterMatchedRecordsWithRule(audiences, visitorProperties, 'audience', identityField);
                             // Return rule errors if present
                             matchedErrors = matchedAudiences.filter((match) => Object.values(RuleError).includes(match));
                             if (matchedErrors.length)
@@ -494,7 +494,7 @@ class DataManager {
             for (let i = 0, length = items.length; i < length; i++) {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     continue;
-                match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
+                match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules, 'location', identityField);
                 const identity = (_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b[identityField]) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c);
                 if (match === true) {
                     (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, MESSAGES.LOCATION_MATCH.replace('#', `#${identity}`));
@@ -580,7 +580,7 @@ class DataManager {
         if (goalRule) {
             if (!(goal === null || goal === void 0 ? void 0 : goal.rules))
                 return;
-            const ruleMatched = this._ruleManager.isRuleMatched(goalRule, goal.rules);
+            const ruleMatched = this._ruleManager.isRuleMatched(goalRule, goal.rules, 'goal');
             // Return rule errors if present
             if (Object.values(RuleError).includes(ruleMatched))
                 return ruleMatched;
@@ -622,7 +622,7 @@ class DataManager {
      * @param {Record<string, any>} visitorProperties
      * @return {Array<Record<string, any> | RuleError>}
      */
-    filterMatchedRecordsWithRule(items, visitorProperties) {
+    filterMatchedRecordsWithRule(items, visitorProperties, entityType, field = 'id') {
         var _a;
         // eslint-disable-line
         const matchedRecords = [];
@@ -631,7 +631,7 @@ class DataManager {
             for (let i = 0, length = items.length; i < length; i++) {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     continue;
-                match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules);
+                match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules, entityType, field);
                 if (match === true) {
                     matchedRecords.push(items[i]);
                 }

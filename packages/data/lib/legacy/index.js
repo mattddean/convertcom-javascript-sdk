@@ -326,7 +326,7 @@ var DataManager = /** @class */ (function () {
                     locationMatched = Boolean(matchedLocations.length);
                 }
                 else if (experience === null || experience === void 0 ? void 0 : experience.site_area) {
-                    locationMatched = this._ruleManager.isRuleMatched(locationProperties, experience.site_area);
+                    locationMatched = this._ruleManager.isRuleMatched(locationProperties, experience.site_area, 'SiteArea');
                     // Return rule errors if present
                     if (Object.values(jsSdkEnums.RuleError).includes(locationMatched))
                         return locationMatched;
@@ -346,7 +346,7 @@ var DataManager = /** @class */ (function () {
                         audiences = this.getItemsByIds(experience.audiences, 'audiences');
                         if (audiences.length) {
                             // Validate visitorProperties against audiences rules
-                            matchedAudiences = this.filterMatchedRecordsWithRule(audiences, visitorProperties);
+                            matchedAudiences = this.filterMatchedRecordsWithRule(audiences, visitorProperties, 'audience', identityField);
                             // Return rule errors if present
                             matchedErrors = matchedAudiences.filter(function (match) {
                                 return Object.values(jsSdkEnums.RuleError).includes(match);
@@ -610,7 +610,7 @@ var DataManager = /** @class */ (function () {
             var _loop_1 = function (i, length_1) {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     return "continue";
-                match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules);
+                match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules, 'location', identityField);
                 var identity = (_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b[identityField]) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c);
                 if (match === true) {
                     (_f = (_e = this_1._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.LOCATION_MATCH.replace('#', "#".concat(identity)));
@@ -702,7 +702,7 @@ var DataManager = /** @class */ (function () {
         if (goalRule) {
             if (!(goal === null || goal === void 0 ? void 0 : goal.rules))
                 return;
-            var ruleMatched = this._ruleManager.isRuleMatched(goalRule, goal.rules);
+            var ruleMatched = this._ruleManager.isRuleMatched(goalRule, goal.rules, 'goal');
             // Return rule errors if present
             if (Object.values(jsSdkEnums.RuleError).includes(ruleMatched))
                 return ruleMatched;
@@ -744,8 +744,9 @@ var DataManager = /** @class */ (function () {
      * @param {Record<string, any>} visitorProperties
      * @return {Array<Record<string, any> | RuleError>}
      */
-    DataManager.prototype.filterMatchedRecordsWithRule = function (items, visitorProperties) {
+    DataManager.prototype.filterMatchedRecordsWithRule = function (items, visitorProperties, entityType, field) {
         var _a;
+        if (field === void 0) { field = 'id'; }
         // eslint-disable-line
         var matchedRecords = [];
         var match;
@@ -753,7 +754,7 @@ var DataManager = /** @class */ (function () {
             for (var i = 0, length_2 = items.length; i < length_2; i++) {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     continue;
-                match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules);
+                match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules, entityType, field);
                 if (match === true) {
                     matchedRecords.push(items[i]);
                 }
