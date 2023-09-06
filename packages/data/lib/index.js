@@ -228,9 +228,6 @@ class DataManager {
             ? !experience.environments.length || // skip if empty
                 experience.environments.includes(environment)
             : true; // skip if no environments
-        // Get locations from DataStore
-        // const storeData = this.getLocalStore(visitorId) || {};
-        // const {locations: selectedLocations = []} = storeData;
         let matchedErrors = [];
         if (experience && !isArchivedExperience && isEnvironmentMatch) {
             let locationMatched = false, matchedLocations = [];
@@ -248,28 +245,6 @@ class DataManager {
                         if (matchedErrors.length)
                             return matchedErrors[0];
                     }
-                    // matchedLocations = experience.locations.filter((locationId) =>
-                    //   selectedLocations.includes(locationId.toString())
-                    // );
-                    // if (!matchedLocations.length) {
-                    //   // Get attached locations
-                    //   const locations = this.getItemsByIds(
-                    //     experience.locations,
-                    //     'locations'
-                    //   ) as Array<Location>;
-                    //   if (locations.length) {
-                    //     // Validate locationProperties against locations rules
-                    //     matchedLocations = this.filterMatchedRecordsWithRule(
-                    //       locations,
-                    //       locationProperties
-                    //     );
-                    //     // Return rule errors if present
-                    //     matchedErrors = matchedLocations.filter((match) =>
-                    //       Object.values(RuleError).includes(match as RuleError)
-                    //     );
-                    //     if (matchedErrors.length) return matchedErrors[0] as RuleError;
-                    //   }
-                    // }
                     // If there are some matched locations
                     locationMatched = Boolean(matchedLocations.length);
                 }
@@ -506,7 +481,7 @@ class DataManager {
      * @returns {Array<Record<string, any> | RuleError>}
      */
     selectLocations(visitorId, items, locationProperties) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
         // eslint-disable-line
         // Get locations from DataStore
         const storeData = this.getLocalStore(visitorId) || {};
@@ -515,41 +490,42 @@ class DataManager {
         let match;
         if (jsSdkUtils.arrayNotEmpty(items)) {
             for (let i = 0, length = items.length; i < length; i++) {
-                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.id))
-                    continue;
-                if (!((_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b.rules))
+                if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     continue;
                 match = this._ruleManager.isRuleMatched(locationProperties, items[i].rules);
-                if (match === true && !locations.includes(items[i].id.toString())) {
-                    locations.push(items[i].id.toString());
-                    this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_ACTIVATED, {
-                        visitorId,
-                        location: {
-                            id: items[i].id,
-                            key: (_c = items[i]) === null || _c === void 0 ? void 0 : _c.key,
-                            name: (_d = items[i]) === null || _d === void 0 ? void 0 : _d.name
-                        }
-                    }, null, true);
+                const identitier = ((_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b.id) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c)) || ((_g = (_f = (_e = items === null || items === void 0 ? void 0 : items[i]) === null || _e === void 0 ? void 0 : _e.key) === null || _f === void 0 ? void 0 : _f.toString) === null || _g === void 0 ? void 0 : _g.call(_f));
+                if (match === true) {
+                    (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.LOCATION_MATCH.replace('#', `#${identitier}`));
+                    if (!locations.includes(identitier)) {
+                        locations.push(identitier);
+                        this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_ACTIVATED, {
+                            visitorId,
+                            location: {
+                                id: (_k = items === null || items === void 0 ? void 0 : items[i]) === null || _k === void 0 ? void 0 : _k.id,
+                                key: (_l = items === null || items === void 0 ? void 0 : items[i]) === null || _l === void 0 ? void 0 : _l.key,
+                                name: (_m = items === null || items === void 0 ? void 0 : items[i]) === null || _m === void 0 ? void 0 : _m.name
+                            }
+                        }, null, true);
+                        (_p = (_o = this._loggerManager) === null || _o === void 0 ? void 0 : _o.info) === null || _p === void 0 ? void 0 : _p.call(_o, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', `#${identitier}`));
+                    }
                     matchedRecords.push(items[i]);
-                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.LOCATION_ACTIVATED.replace('#', `#${items[i].id}`));
                 }
                 else if (match !== false) {
                     // catch rule errors
                     matchedRecords.push(match);
                 }
-                else if (match === false &&
-                    locations.includes(items[i].id.toString())) {
+                else if (match === false && locations.includes(identitier)) {
                     this._eventManager.fire(jsSdkEnums.SystemEvents.LOCATION_DEACTIVATED, {
                         visitorId,
                         location: {
-                            id: items[i].id,
-                            key: (_g = items[i]) === null || _g === void 0 ? void 0 : _g.key,
-                            name: (_h = items[i]) === null || _h === void 0 ? void 0 : _h.name
+                            id: (_q = items === null || items === void 0 ? void 0 : items[i]) === null || _q === void 0 ? void 0 : _q.id,
+                            key: (_r = items === null || items === void 0 ? void 0 : items[i]) === null || _r === void 0 ? void 0 : _r.key,
+                            name: (_s = items === null || items === void 0 ? void 0 : items[i]) === null || _s === void 0 ? void 0 : _s.name
                         }
                     }, null, true);
-                    const locationIndex = locations.findIndex((location) => location === items[i].id.toString());
+                    const locationIndex = locations.findIndex((location) => location === identitier);
                     locations.splice(locationIndex, 1);
-                    (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.info) === null || _k === void 0 ? void 0 : _k.call(_j, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${items[i].id}`));
+                    (_u = (_t = this._loggerManager) === null || _t === void 0 ? void 0 : _t.info) === null || _u === void 0 ? void 0 : _u.call(_t, jsSdkEnums.MESSAGES.LOCATION_DEACTIVATED.replace('#', `#${identitier}`));
                 }
             }
         }
