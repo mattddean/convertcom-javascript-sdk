@@ -106,10 +106,10 @@ var RuleManager = /** @class */ (function () {
             for (var i = 0, l = ruleSet.OR.length; i < l; i++) {
                 match = this._processAND(data, ruleSet.OR[i]);
                 if (Object.values(jsSdkEnums.RuleError).includes(match)) {
-                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.ERROR_MESSAGES.RULE_ERROR);
+                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, logEntry || '', jsSdkEnums.ERROR_MESSAGES.RULE_ERROR);
                 }
                 else {
-                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, match === false
+                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, logEntry || '', match === false
                         ? jsSdkEnums.MESSAGES.RULE_NOT_MATCH
                         : jsSdkEnums.MESSAGES.RULE_MATCH.replace('#', String(i)));
                 }
@@ -119,7 +119,7 @@ var RuleManager = /** @class */ (function () {
             }
         }
         else {
-            (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.warn) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+            (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.warn) === null || _h === void 0 ? void 0 : _h.call(_g, logEntry || '', jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     };
