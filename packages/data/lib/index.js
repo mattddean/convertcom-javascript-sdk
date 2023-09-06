@@ -215,7 +215,7 @@ class DataManager {
      * @return {Experience | RuleError}
      */
     matchRulesByField(visitorId, identity, visitorProperties, locationProperties, identityField = 'key', environment = this._environment) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         // eslint-disable-line
         // Retrieve the experience
         const experience = this._getEntityByField(identity, 'experiences', identityField);
@@ -307,24 +307,8 @@ class DataManager {
                         (_j = (_h = this._loggerManager) === null || _h === void 0 ? void 0 : _h.info) === null || _j === void 0 ? void 0 : _j.call(_h, jsSdkEnums.MESSAGES.EXPERIENCE_RULES_MATCHED);
                         return experience;
                     }
-                    else {
-                        (_l = (_k = this._loggerManager) === null || _k === void 0 ? void 0 : _k.info) === null || _l === void 0 ? void 0 : _l.call(_k, jsSdkEnums.MESSAGES.VARIATIONS_NOT_FOUND);
-                        // eslint-disable-line
-                    }
-                }
-                else {
-                    (_o = (_m = this._loggerManager) === null || _m === void 0 ? void 0 : _m.info) === null || _o === void 0 ? void 0 : _o.call(_m, jsSdkEnums.MESSAGES.AUDIENCE_NOT_MATCH);
-                    // eslint-disable-line
                 }
             }
-            else {
-                (_q = (_p = this._loggerManager) === null || _p === void 0 ? void 0 : _p.info) === null || _q === void 0 ? void 0 : _q.call(_p, jsSdkEnums.MESSAGES.LOCATION_NOT_MATCH);
-                // eslint-disable-line
-            }
-        }
-        else {
-            (_s = (_r = this._loggerManager) === null || _r === void 0 ? void 0 : _r.info) === null || _s === void 0 ? void 0 : _s.call(_r, jsSdkEnums.MESSAGES.EXPERIENCE_NOT_FOUND);
-            // eslint-disable-line
         }
         return null;
     }
