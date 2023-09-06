@@ -610,7 +610,7 @@ var DataManager = /** @class */ (function () {
             var _loop_1 = function (i, length_1) {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     return "continue";
-                match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules, 'location', identityField);
+                match = this_1._ruleManager.isRuleMatched(locationProperties, items[i].rules, "Location #".concat(items[i][identityField]));
                 var identity = (_d = (_c = (_b = items === null || items === void 0 ? void 0 : items[i]) === null || _b === void 0 ? void 0 : _b[identityField]) === null || _c === void 0 ? void 0 : _c.toString) === null || _d === void 0 ? void 0 : _d.call(_c);
                 if (match === true) {
                     (_f = (_e = this_1._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.MESSAGES.LOCATION_MATCH.replace('#', "#".concat(identity)));
@@ -702,7 +702,7 @@ var DataManager = /** @class */ (function () {
         if (goalRule) {
             if (!(goal === null || goal === void 0 ? void 0 : goal.rules))
                 return;
-            var ruleMatched = this._ruleManager.isRuleMatched(goalRule, goal.rules, 'goal');
+            var ruleMatched = this._ruleManager.isRuleMatched(goalRule, goal.rules, "Goal #".concat(goalId));
             // Return rule errors if present
             if (Object.values(jsSdkEnums.RuleError).includes(ruleMatched))
                 return ruleMatched;
@@ -754,7 +754,7 @@ var DataManager = /** @class */ (function () {
             for (var i = 0, length_2 = items.length; i < length_2; i++) {
                 if (!((_a = items === null || items === void 0 ? void 0 : items[i]) === null || _a === void 0 ? void 0 : _a.rules))
                     continue;
-                match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules, entityType, field);
+                match = this._ruleManager.isRuleMatched(visitorProperties, items[i].rules, "".concat(jsSdkUtils.camelCase(entityType), " #").concat(items[i][field]));
                 if (match === true) {
                     matchedRecords.push(items[i]);
                 }

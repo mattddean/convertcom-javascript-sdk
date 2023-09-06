@@ -59,16 +59,11 @@ class RuleManager {
      * @param {RuleSet} ruleSet
      * @return {boolean | RuleError}
      */
-    isRuleMatched(data, ruleSet, entityType, field = 'id') {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+    isRuleMatched(data, ruleSet, logEntry) {
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         // eslint-disable-line
-        if (entityType) {
-            if (data === null || data === void 0 ? void 0 : data[field]) {
-                (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.PROCESSING_ENTITY.replace('#', `${jsSdkUtils.camelCase(entityType)} #${data === null || data === void 0 ? void 0 : data[field]}`));
-            }
-            else {
-                (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.MESSAGES.PROCESSING_ENTITY.replace('#', jsSdkUtils.camelCase(entityType)));
-            }
+        if (logEntry) {
+            (_b = (_a = this._loggerManager) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.call(_a, jsSdkEnums.MESSAGES.PROCESSING_ENTITY.replace('#', logEntry));
         }
         // Top OR level
         let match;
@@ -77,10 +72,10 @@ class RuleManager {
             for (let i = 0, l = ruleSet.OR.length; i < l; i++) {
                 match = this._processAND(data, ruleSet.OR[i]);
                 if (Object.values(jsSdkEnums.RuleError).includes(match)) {
-                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, jsSdkEnums.ERROR_MESSAGES.RULE_ERROR);
+                    (_d = (_c = this._loggerManager) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.call(_c, jsSdkEnums.ERROR_MESSAGES.RULE_ERROR);
                 }
                 else {
-                    (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.call(_g, match === false
+                    (_f = (_e = this._loggerManager) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.call(_e, match === false
                         ? jsSdkEnums.MESSAGES.RULE_NOT_MATCH
                         : jsSdkEnums.MESSAGES.RULE_MATCH.replace('#', String(i)));
                 }
@@ -90,7 +85,7 @@ class RuleManager {
             }
         }
         else {
-            (_k = (_j = this._loggerManager) === null || _j === void 0 ? void 0 : _j.warn) === null || _k === void 0 ? void 0 : _k.call(_j, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
+            (_h = (_g = this._loggerManager) === null || _g === void 0 ? void 0 : _g.warn) === null || _h === void 0 ? void 0 : _h.call(_g, jsSdkEnums.ERROR_MESSAGES.RULE_NOT_VALID);
         }
         return false;
     }

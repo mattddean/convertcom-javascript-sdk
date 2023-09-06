@@ -136,7 +136,7 @@ var SegmentsManager = /** @class */ (function () {
             for (var segments_1 = __values(segments), segments_1_1 = segments_1.next(); !segments_1_1.done; segments_1_1 = segments_1.next()) {
                 var segment = segments_1_1.value;
                 if (segmentRule && !segmentsMatched) {
-                    segmentsMatched = this._ruleManager.isRuleMatched(segmentRule, segment === null || segment === void 0 ? void 0 : segment.rules, 'segments');
+                    segmentsMatched = this._ruleManager.isRuleMatched(segmentRule, segment === null || segment === void 0 ? void 0 : segment.rules, "Segments #".concat(segment === null || segment === void 0 ? void 0 : segment.id));
                     // Return rule errors if present
                     if (Object.values(jsSdkEnums.RuleError).includes(segmentsMatched))
                         return segmentsMatched;
