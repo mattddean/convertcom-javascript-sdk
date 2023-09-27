@@ -13,6 +13,8 @@ export interface ApiManagerInterface {
     releaseQueue(reason?: string): Promise<any>;
     stopQueue(): void;
     startQueue(): void;
+    enableTracking(): void;
+    disableTracking(): void;
     setData(data: ConfigData): void;
     getConfigByKey(sdkKey: string): Promise<ConfigData>;
 }

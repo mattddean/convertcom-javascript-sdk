@@ -39,6 +39,7 @@ export type Config = {
     data: ConfigData;
     dataStore?: object;
     dataRefreshInterval?: number;
+    tracking?: boolean;
     events?: {
         batch_size?: number;
         release_interval?: number;

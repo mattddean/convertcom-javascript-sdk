@@ -28,6 +28,7 @@ export declare class ApiManager implements ApiManagerInterface {
     private _accountId;
     private _projectId;
     private _trackingEvent;
+    private _trackingEnabled;
     readonly batchSize: number;
     readonly releaseInterval: number;
     /**
@@ -70,6 +71,14 @@ export declare class ApiManager implements ApiManagerInterface {
      * Start queue timer
      */
     startQueue(): void;
+    /**
+     * Enable tracking
+     */
+    enableTracking(): void;
+    /**
+     * Disable tracking
+     */
+    disableTracking(): void;
     /**
      * Set data
      */

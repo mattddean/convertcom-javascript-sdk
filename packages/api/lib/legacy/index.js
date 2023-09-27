@@ -130,6 +130,7 @@ var ApiManager = /** @class */ (function () {
             projectId: this._projectId,
             visitors: []
         };
+        this._trackingEnabled = config === null || config === void 0 ? void 0 : config.tracking;
         this._requestsQueue = {
             length: 0,
             items: [],
@@ -194,12 +195,14 @@ var ApiManager = /** @class */ (function () {
             eventRequest: eventRequest
         });
         this._requestsQueue.push(visitorId, eventRequest, segments);
-        if (this._requestsQueue.length === this.batchSize) {
-            this.releaseQueue('size').then();
-        }
-        else {
-            if (this._requestsQueue.length === 1) {
-                this.startQueue();
+        if (this._trackingEnabled) {
+            if (this._requestsQueue.length === this.batchSize) {
+                this.releaseQueue('size').then();
+            }
+            else {
+                if (this._requestsQueue.length === 1) {
+                    this.startQueue();
+                }
             }
         }
     };
@@ -255,6 +258,19 @@ var ApiManager = /** @class */ (function () {
         this._requestsQueueTimerID = setTimeout(function () {
             _this.releaseQueue('timeout');
         }, this.releaseInterval);
+    };
+    /**
+     * Enable tracking
+     */
+    ApiManager.prototype.enableTracking = function () {
+        this._trackingEnabled = true;
+        this.releaseQueue('trackingEnabled');
+    };
+    /**
+     * Disable tracking
+     */
+    ApiManager.prototype.disableTracking = function () {
+        this._trackingEnabled = false;
     };
     /**
      * Set data
