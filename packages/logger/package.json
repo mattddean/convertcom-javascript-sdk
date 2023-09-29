@@ -32,7 +32,7 @@
     "node": ">=8.0.0"
   },
   "peerDependencies": {
-    "@mattddean-oss/convertcom-js-sdk-enums": "1.0.0"
+    "@mattddean-oss/convertcom-js-sdk-enums": "1.3.0-canary.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
@@ -70,5 +70,5 @@
     "typings": "^2.1.1",
     "webpack": "^5.72.1"
   },
-  "version": "1.3.0-canary.0"
+  "version": "1.3.0-canary.1"
 }
