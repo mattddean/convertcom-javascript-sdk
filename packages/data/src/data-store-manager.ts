@@ -4,15 +4,15 @@
  * Copyright(c) 2020 Convert Insights, Inc
  * License Apache-2.0
  */
-import {objectDeepMerge} from '@convertcom/js-sdk-utils';
+import {objectDeepMerge} from '@mattddean-oss/convertcom-js-sdk-utils';
 
 import {DataStoreManagerInterface} from './interfaces/data-store-manager';
-import {LogManagerInterface} from '@convertcom/js-sdk-logger';
-import {EventManagerInterface} from '@convertcom/js-sdk-event';
-import {Config} from '@convertcom/js-sdk-types';
-import {SystemEvents} from '@convertcom/js-sdk-enums';
+import {LogManagerInterface} from '@mattddean-oss/convertcom-js-sdk-logger';
+import {EventManagerInterface} from '@mattddean-oss/convertcom-js-sdk-event';
+import {Config} from '@mattddean-oss/convertcom-js-sdk-types';
+import {SystemEvents} from '@mattddean-oss/convertcom-js-sdk-enums';
 
-import {ERROR_MESSAGES} from '@convertcom/js-sdk-enums';
+import {ERROR_MESSAGES} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 const DEFAULT_BATCH_SIZE = 1;
 const DEFAULT_RELEASE_INTERVAL = 5000;

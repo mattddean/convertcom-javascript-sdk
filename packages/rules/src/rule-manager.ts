@@ -9,7 +9,7 @@ import {
   camelCase,
   Comparisons as DEFAULT_COMPARISON_PROCESSOR,
   objectDeepValue
-} from '@convertcom/js-sdk-utils';
+} from '@mattddean-oss/convertcom-js-sdk-utils';
 
 import {RuleManagerInterface} from './interfaces/rule-manager';
 
@@ -19,9 +19,9 @@ import {
   RuleAnd,
   RuleOrWhen,
   RuleSet
-} from '@convertcom/js-sdk-types';
-import {LogManagerInterface} from '@convertcom/js-sdk-logger';
-import {ERROR_MESSAGES, MESSAGES, RuleError} from '@convertcom/js-sdk-enums';
+} from '@mattddean-oss/convertcom-js-sdk-types';
+import {LogManagerInterface} from '@mattddean-oss/convertcom-js-sdk-logger';
+import {ERROR_MESSAGES, MESSAGES, RuleError} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 const DEFAULT_KEYS_CASE_SENSITIVE = true;
 const DEFAULT_NEGATION = '!';

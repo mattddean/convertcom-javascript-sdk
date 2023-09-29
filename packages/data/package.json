@@ -1,5 +1,5 @@
 {
-  "name": "@convertcom/js-sdk-data",
+  "name": "@mattddean-oss/convertcom-js-sdk-data",
   "description": "",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -35,10 +35,10 @@
     "node": ">=8.0.0"
   },
   "peerDependencies": {
-    "@convertcom/js-sdk-enums": "1.0.0",
-    "@convertcom/js-sdk-logger": "1.0.0",
-    "@convertcom/js-sdk-types": "1.0.0",
-    "@convertcom/js-sdk-utils": "1.0.0"
+    "@mattddean-oss/convertcom-js-sdk-enums": "1.0.0",
+    "@mattddean-oss/convertcom-js-sdk-logger": "1.0.0",
+    "@mattddean-oss/convertcom-js-sdk-types": "1.0.0",
+    "@mattddean-oss/convertcom-js-sdk-utils": "1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
@@ -79,5 +79,5 @@
     "typings": "^2.1.1",
     "webpack": "^5.72.1"
   },
-  "version": "1.0.0"
+  "version": "1.3.0-canary.0"
 }

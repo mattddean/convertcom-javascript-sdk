@@ -24,7 +24,7 @@ Variation 2:
 
 ```javascript
 import {useState, useEffect, useContext, createContext} from 'react';
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 
 const UserContext = createContext();
 

@@ -9,15 +9,15 @@ import {
   camelCase,
   objectDeepValue,
   objectNotEmpty
-} from '@convertcom/js-sdk-utils';
+} from '@mattddean-oss/convertcom-js-sdk-utils';
 
-import {ApiManagerInterface} from '@convertcom/js-sdk-api';
-import {BucketingManagerInterface} from '@convertcom/js-sdk-bucketing';
+import {ApiManagerInterface} from '@mattddean-oss/convertcom-js-sdk-api';
+import {BucketingManagerInterface} from '@mattddean-oss/convertcom-js-sdk-bucketing';
 import {DataStoreManagerInterface} from './interfaces/data-store-manager';
 import {DataManagerInterface} from './interfaces/data-manager';
-import {EventManagerInterface} from '@convertcom/js-sdk-event';
-import {LogManagerInterface} from '@convertcom/js-sdk-logger';
-import {RuleManagerInterface} from '@convertcom/js-sdk-rules';
+import {EventManagerInterface} from '@mattddean-oss/convertcom-js-sdk-event';
+import {LogManagerInterface} from '@mattddean-oss/convertcom-js-sdk-logger';
+import {RuleManagerInterface} from '@mattddean-oss/convertcom-js-sdk-rules';
 import {
   Entity,
   Variation,
@@ -36,7 +36,7 @@ import {
   Goal,
   SegmentsData,
   Segments
-} from '@convertcom/js-sdk-types';
+} from '@mattddean-oss/convertcom-js-sdk-types';
 
 import {
   DATA_ENTITIES,
@@ -47,7 +47,7 @@ import {
   GoalDataKey,
   SegmentsKeys,
   SystemEvents
-} from '@convertcom/js-sdk-enums';
+} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 import {DataStoreManager} from './data-store-manager';
 const LOCAL_STORE_LIMIT = 10000;

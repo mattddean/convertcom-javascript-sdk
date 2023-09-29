@@ -4,8 +4,8 @@
  * Copyright(c) 2020 Convert Insights, Inc
  * License Apache-2.0
  */
-import {Rule, RuleSet} from '@convertcom/js-sdk-types';
-import {RuleError} from '@convertcom/js-sdk-enums';
+import {Rule, RuleSet} from '@mattddean-oss/convertcom-js-sdk-types';
+import {RuleError} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export interface RuleManagerInterface {
   comparisonProcessor: Record<string, any>;

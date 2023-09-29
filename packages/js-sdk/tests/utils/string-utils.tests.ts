@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import 'mocha';
-import {stringFormat} from '@convertcom/js-sdk-utils';
+import {stringFormat} from '@mattddean-oss/convertcom-js-sdk-utils';
 
 describe('String formatting tool tests', function () {
   it('Should use template string', function () {

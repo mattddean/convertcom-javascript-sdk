@@ -4,7 +4,7 @@
  * Copyright(c) 2020 Convert Insights, Inc
  * License Apache-2.0
  */
-import {SystemEvents} from '@convertcom/js-sdk-enums';
+import {SystemEvents} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export interface EventManagerInterface {
   _listeners: Record<string, Array<any>>;

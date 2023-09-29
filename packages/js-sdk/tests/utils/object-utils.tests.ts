@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import 'mocha';
-import {objectDeepValue, objectDeepMerge} from '@convertcom/js-sdk-utils';
+import {objectDeepValue, objectDeepMerge} from '@mattddean-oss/convertcom-js-sdk-utils';
 
 describe('Object utils tool tests', function () {
   it('Should return macthing value with provided path of object', function () {

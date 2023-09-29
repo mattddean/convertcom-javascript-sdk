@@ -8,20 +8,20 @@
 /**
  * Module dependencies
  */
-import {ApiManager} from '@convertcom/js-sdk-api';
-import {BucketingManager} from '@convertcom/js-sdk-bucketing';
+import {ApiManager} from '@mattddean-oss/convertcom-js-sdk-api';
+import {BucketingManager} from '@mattddean-oss/convertcom-js-sdk-bucketing';
 import {Core} from './src/core';
-import {DataManager} from '@convertcom/js-sdk-data';
-import {EventManager} from '@convertcom/js-sdk-event';
-import {ExperienceManager} from '@convertcom/js-sdk-experience';
+import {DataManager} from '@mattddean-oss/convertcom-js-sdk-data';
+import {EventManager} from '@mattddean-oss/convertcom-js-sdk-event';
+import {ExperienceManager} from '@mattddean-oss/convertcom-js-sdk-experience';
 import {FeatureManager} from './src/feature-manager';
-import {RuleManager} from '@convertcom/js-sdk-rules';
-import {SegmentsManager} from '@convertcom/js-sdk-segments';
-import {LogManager} from '@convertcom/js-sdk-logger';
+import {RuleManager} from '@mattddean-oss/convertcom-js-sdk-rules';
+import {SegmentsManager} from '@mattddean-oss/convertcom-js-sdk-segments';
+import {LogManager} from '@mattddean-oss/convertcom-js-sdk-logger';
 
 import {Config} from './src/config';
-import {ERROR_MESSAGES} from '@convertcom/js-sdk-enums';
-import {Config as ConfigType} from '@convertcom/js-sdk-types';
+import {ERROR_MESSAGES} from '@mattddean-oss/convertcom-js-sdk-enums';
+import {Config as ConfigType} from '@mattddean-oss/convertcom-js-sdk-types';
 
 //todo: add config attributes definition
 /**
@@ -126,5 +126,5 @@ class ConvertSDK extends Core {
 
 export default ConvertSDK;
 
-export {LogLevel, SystemEvents} from '@convertcom/js-sdk-enums';
-export {FileLogger, DataStore} from '@convertcom/js-sdk-utils';
+export {LogLevel, SystemEvents} from '@mattddean-oss/convertcom-js-sdk-enums';
+export {FileLogger, DataStore} from '@mattddean-oss/convertcom-js-sdk-utils';

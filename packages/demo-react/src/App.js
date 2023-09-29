@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DataStore from "./DataStore";
 import { UserContext } from "./Context";
-import ConvertSDK from "@convertcom/js-sdk"; // [ConvertSDK]
+import ConvertSDK from "@mattddean-oss/convertcom-js-sdk"; // [ConvertSDK]
 
 const dataStore = new DataStore();
 

@@ -7,7 +7,7 @@ import spies from 'chai-spies';
 
 import {EventManager as em} from '../src/event-manager';
 
-import {Config} from '@convertcom/js-sdk-types';
+import {Config} from '@mattddean-oss/convertcom-js-sdk-types';
 
 import configuration from './test-config.json';
 

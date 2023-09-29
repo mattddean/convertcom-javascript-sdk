@@ -4,7 +4,7 @@
  * Copyright(c) 2020 Convert Insights, Inc
  * License Apache-2.0
  */
-import {LogLevel} from '@convertcom/js-sdk-enums';
+import {LogLevel} from '@mattddean-oss/convertcom-js-sdk-enums';
 import {LogMethodMapInterface} from './log-method-map';
 
 export interface LogClientInterface {

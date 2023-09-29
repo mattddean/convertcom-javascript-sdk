@@ -1,5 +1,5 @@
 {
-  "name": "@convertcom/js-sdk-types",
+  "name": "@mattddean-oss/convertcom-js-sdk-types",
   "description": "",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -26,7 +26,7 @@
     "node": ">=8.0.0"
   },
   "peerDependencies": {
-    "@convertcom/js-sdk-enums": "1.0.0"
+    "@mattddean-oss/convertcom-js-sdk-enums": "1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",

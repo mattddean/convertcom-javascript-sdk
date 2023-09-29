@@ -8,7 +8,7 @@
 import {
   GoogleAnalyticsType,
   IntegrationProvider
-} from '@convertcom/js-sdk-enums';
+} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export type Integration = {
   provider: IntegrationProvider;

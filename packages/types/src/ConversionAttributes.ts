@@ -5,7 +5,7 @@
  * License Apache-2.0
  */
 
-import {GoalDataKey} from '@convertcom/js-sdk-enums';
+import {GoalDataKey} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export type ConversionAttributes = {
   ruleData?: Record<string, any>;

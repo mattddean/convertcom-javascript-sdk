@@ -5,11 +5,11 @@
  * License Apache-2.0
  */
 import {ContextInterface} from './interfaces/context';
-import {EventManagerInterface} from '@convertcom/js-sdk-event';
-import {ExperienceManagerInterface} from '@convertcom/js-sdk-experience';
+import {EventManagerInterface} from '@mattddean-oss/convertcom-js-sdk-event';
+import {ExperienceManagerInterface} from '@mattddean-oss/convertcom-js-sdk-experience';
 import {FeatureManagerInterface} from './interfaces/feature-manager';
-import {LogManagerInterface} from '@convertcom/js-sdk-logger';
-import {DataManagerInterface} from '@convertcom/js-sdk-data';
+import {LogManagerInterface} from '@mattddean-oss/convertcom-js-sdk-logger';
+import {DataManagerInterface} from '@mattddean-oss/convertcom-js-sdk-data';
 
 import {
   Config,
@@ -20,16 +20,16 @@ import {
   ConversionAttributes,
   SegmentsData,
   SegmentsAttributes
-} from '@convertcom/js-sdk-types';
+} from '@mattddean-oss/convertcom-js-sdk-types';
 
 import {
   ERROR_MESSAGES,
   RuleError,
   SystemEvents,
   SegmentsKeys
-} from '@convertcom/js-sdk-enums';
-import {objectDeepMerge} from '@convertcom/js-sdk-utils';
-import {SegmentsManagerInterface} from '@convertcom/js-sdk-segments';
+} from '@mattddean-oss/convertcom-js-sdk-enums';
+import {objectDeepMerge} from '@mattddean-oss/convertcom-js-sdk-utils';
+import {SegmentsManagerInterface} from '@mattddean-oss/convertcom-js-sdk-segments';
 
 /**
  * Provides visitor context

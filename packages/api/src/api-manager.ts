@@ -16,18 +16,18 @@ import {
   VisitorEvent,
   VisitorsQueue,
   Path
-} from '@convertcom/js-sdk-types';
-import {SystemEvents} from '@convertcom/js-sdk-enums';
-import {objectDeepValue} from '@convertcom/js-sdk-utils';
-import {LogManagerInterface} from '@convertcom/js-sdk-logger';
-import {EventManagerInterface} from '@convertcom/js-sdk-event';
+} from '@mattddean-oss/convertcom-js-sdk-types';
+import {SystemEvents} from '@mattddean-oss/convertcom-js-sdk-enums';
+import {objectDeepValue} from '@mattddean-oss/convertcom-js-sdk-utils';
+import {LogManagerInterface} from '@mattddean-oss/convertcom-js-sdk-logger';
+import {EventManagerInterface} from '@mattddean-oss/convertcom-js-sdk-event';
 import {
   HttpClient,
   HttpMethod,
   HttpResponse,
   HttpResponseType,
   HttpRequest
-} from '@convertcom/js-sdk-utils';
+} from '@mattddean-oss/convertcom-js-sdk-utils';
 
 import {
   DEFAULT_CONFIG_ENDPOINT,

@@ -2,11 +2,11 @@ import 'mocha';
 import {expect} from 'chai';
 import {assert} from 'chai';
 import http from 'http';
-import {ApiManager as am} from '@convertcom/js-sdk-api';
-import {EventManager as em} from '@convertcom/js-sdk-event';
-import {SystemEvents} from '@convertcom/js-sdk-enums';
+import {ApiManager as am} from '@mattddean-oss/convertcom-js-sdk-api';
+import {EventManager as em} from '@mattddean-oss/convertcom-js-sdk-event';
+import {SystemEvents} from '@mattddean-oss/convertcom-js-sdk-enums';
 import testConfig from './test-config.json';
-import {Config} from '@convertcom/js-sdk-types';
+import {Config} from '@mattddean-oss/convertcom-js-sdk-types';
 
 const host = 'http://localhost';
 const port = 8090;

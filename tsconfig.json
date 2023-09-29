@@ -5,8 +5,8 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@convertcom/js-sdk": ["../../js-sdk/src"],
-      "@convertcom/js-sdk/*": ["../../js-sdk/src/*"]
+      "@mattddean-oss/convertcom-js-sdk": ["../../js-sdk/src"],
+      "@mattddean-oss/convertcom-js-sdk/*": ["../../js-sdk/src/*"]
     }
   },
   "exclude": ["node_modules"]

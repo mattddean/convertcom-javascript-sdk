@@ -9,7 +9,7 @@ import {
   DoNotTrack,
   GoogleAnalyticsType,
   ProjectType
-} from '@convertcom/js-sdk-enums';
+} from '@mattddean-oss/convertcom-js-sdk-enums';
 export type Project = {
   id: Id;
   name: string;

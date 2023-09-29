@@ -5,7 +5,7 @@
  * License Apache-2.0
  */
 
-import {ERROR_MESSAGES, MESSAGES} from '@convertcom/js-sdk-enums';
+import {ERROR_MESSAGES, MESSAGES} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export type HttpMethod =
   | 'GET'

@@ -9,8 +9,8 @@ import {
   Feature,
   IdentityField,
   BucketedFeature
-} from '@convertcom/js-sdk-types';
-import {RuleError} from '@convertcom/js-sdk-enums';
+} from '@mattddean-oss/convertcom-js-sdk-types';
+import {RuleError} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export interface FeatureManagerInterface {
   getList(): Array<Feature>;

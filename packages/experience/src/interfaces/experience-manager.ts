@@ -9,8 +9,8 @@ import {
   Id,
   Experience,
   BucketedVariation
-} from '@convertcom/js-sdk-types';
-import {RuleError} from '@convertcom/js-sdk-enums';
+} from '@mattddean-oss/convertcom-js-sdk-types';
+import {RuleError} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export interface ExperienceManagerInterface {
   getList(): Array<Experience>;

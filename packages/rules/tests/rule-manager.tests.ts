@@ -3,9 +3,9 @@ import {expect} from 'chai';
 import {assert} from 'chai';
 
 import {RuleManager as rm} from '../src/rule-manager';
-import {Comparisons as comparisonProcessor} from '@convertcom/js-sdk-utils';
+import {Comparisons as comparisonProcessor} from '@mattddean-oss/convertcom-js-sdk-utils';
 import testConfig from './test-config.json';
-import {RuleSet, Config} from '@convertcom/js-sdk-types';
+import {RuleSet, Config} from '@mattddean-oss/convertcom-js-sdk-types';
 
 describe('RuleManager tests', function () {
   it('Should expose RuleManager', function () {

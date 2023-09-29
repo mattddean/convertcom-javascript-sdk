@@ -1,5 +1,5 @@
 {
-  "name": "@convertcom/js-sdk-enums",
+  "name": "@mattddean-oss/convertcom-js-sdk-enums",
   "description": "",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -50,5 +50,5 @@
     "typings": "^2.1.1",
     "webpack": "^5.72.1"
   },
-  "version": "1.0.0"
+  "version": "1.3.0-canary.0"
 }

@@ -73,7 +73,7 @@ All matching rules apply only to entities having the same `environment`. You can
 Install module using `npm` or `yarn`:
 
 ```
-npm install --save @convertcom/js-sdk
+npm install --save @mattddean-oss/convertcom-js-sdk
 ```
 
 Package's build contains definitions for generating entry points in different formats:
@@ -85,10 +85,10 @@ Package's build contains definitions for generating entry points in different fo
 The above entry points can also be loaded through [unpkg](https://unpkg.com/) but this method will add a dependency on third-party URLs and therefore is recommended to use it only for evaluation purposes:
 
 ```html
-<script src="https://unpkg.com/@convertcom/js-sdk/lib/index.js"></script>
+<script src="https://unpkg.com/@mattddean-oss/convertcom-js-sdk/lib/index.js"></script>
 
 <!-- or the minified version -->
-<script src="https://unpkg.com/@convertcom/js-sdk/lib/index.min.js"></script>
+<script src="https://unpkg.com/@mattddean-oss/convertcom-js-sdk/lib/index.min.js"></script>
 ```
 
 ## SDK Usage
@@ -98,13 +98,13 @@ The above entry points can also be loaded through [unpkg](https://unpkg.com/) bu
 **ES6:**
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 ```
 
 **CommonJS:**
 
 ```javascript
-const ConvertSDK = require('@convertcom/js-sdk').default;
+const ConvertSDK = require('@mattddean-oss/convertcom-js-sdk').default;
 ```
 
 The SDK instance can be initialized by either providing an SDK key or a full project's data object.
@@ -142,7 +142,7 @@ When using static project data, the SDK is instantiated as soon as the instance 
 The following shows the object model for the configuration options:
 
 ```javascript
-import {LogLevel} from '@convertcom/js-sdk');
+import {LogLevel} from '@mattddean-oss/convertcom-js-sdk');
 
 const config = {
   sdkKey: '' //either this or 'data' has to be provided
@@ -211,7 +211,7 @@ List of bucketed variations.
 #### Example
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };
@@ -243,7 +243,7 @@ Bucketed variation.
 #### Example
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };
@@ -275,7 +275,7 @@ List of bucketed features.
 #### Example
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };
@@ -309,7 +309,7 @@ Bucketed feature.
 #### Example
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };
@@ -340,7 +340,7 @@ Void.
 #### Example
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };
@@ -378,7 +378,7 @@ Void.
 #### Example
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };
@@ -443,7 +443,7 @@ You can provide your own DataStore that is used to make user bucketing persisten
 The provided DataStore interface is expected to provide 2 methods: `set` and `get`.
 
 ```javascript
-import ConvertSDK from '@convertcom/js-sdk';
+import ConvertSDK from '@mattddean-oss/convertcom-js-sdk';
 const config = {
   // full configuration options
 };

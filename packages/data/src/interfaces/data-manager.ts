@@ -13,9 +13,9 @@ import {
   StoreData,
   SegmentsData,
   Experience
-} from '@convertcom/js-sdk-types';
+} from '@mattddean-oss/convertcom-js-sdk-types';
 import {DataStoreManagerInterface} from './data-store-manager';
-import {GoalDataKey, RuleError} from '@convertcom/js-sdk-enums';
+import {GoalDataKey, RuleError} from '@mattddean-oss/convertcom-js-sdk-enums';
 
 export interface DataManagerInterface {
   data: ConfigData;
