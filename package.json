@@ -38,7 +38,20 @@
     "sdk:test": "cd packages/js-sdk && yarn test",
     "sdk:docs": "cd packages/js-sdk/docs && yarn docs",
     "demo:react:start": "cd packages/demo-react && yarn start",
-    "demo:nodejs:start": "cd packages/demo-nodejs && yarn start"
+    "demo:nodejs:start": "cd packages/demo-nodejs && yarn start",
+    "api:publish": "cd packages/api && npm publish --access=public",
+    "bucketing:publish": "cd packages/bucketing && npm publish --access=public",
+    "data:publish": "cd packages/data && npm publish --access=public",
+    "enums:publish": "cd packages/enums && npm publish --access=public",
+    "event:publish": "cd packages/event && npm publish --access=public",
+    "experience:publish": "cd packages/experience && npm publish --access=public",
+    "logger:publish": "cd packages/logger && npm publish --access=public",
+    "rules:publish": "cd packages/rules && npm publish --access=public",
+    "segments:publish": "cd packages/segments && npm publish --access=public",
+    "types:publish": "cd packages/types && npm publish --access=public",
+    "utils:publish": "cd packages/utils && npm publish --access=public",
+    "sdk:publish": "cd packages/js-sdk && npm publish --access=public",
+    "all:publish": "yarn enums:publish && yarn types:publish && yarn utils:publish && yarn event:publish && yarn bucketing:publish && yarn logger:publish && yarn rules:publish && yarn segments:publish && yarn api:publish && yarn data:publish && yarn experience:publish && yarn sdk:publish"
   },
   "private": true,
   "workspaces": [
