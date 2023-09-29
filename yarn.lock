@@ -1683,10 +1683,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -1733,10 +1733,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -1783,10 +1783,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -1896,10 +1896,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -1946,10 +1946,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -1992,7 +1992,7 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -2038,10 +2038,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -2088,10 +2088,10 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
-    "@convertcom/logger": 1.0.0
-    "@convertcom/types": 1.0.0
-    "@convertcom/utils": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
+    "@convertcom/js-sdk-logger": 1.0.0
+    "@convertcom/js-sdk-types": 1.0.0
+    "@convertcom/js-sdk-utils": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -2123,7 +2123,7 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -2166,7 +2166,7 @@ __metadata:
     typings: ^2.1.1
     webpack: ^5.72.1
   peerDependencies:
-    "@convertcom/enums": 1.0.0
+    "@convertcom/js-sdk-enums": 1.0.0
   languageName: unknown
   linkType: soft
 
@@ -20437,21 +20437,21 @@ __metadata:
 
 "typescript@patch:typescript@^4.5.4#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
+  checksum: 1f8f3b6aaea19f0f67cba79057674ba580438a7db55057eb89cc06950483c5d632115c14077f6663ea76fd09fce3c190e6414bb98582ec80aa5a4eaf345d5b68
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
   version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=85af82"
+  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 07106822b4305de3f22835cbba949a2b35451cad50888759b6818421290ff95d522b38ef7919e70fb381c5fe9c1c643d7dea22c8b31652a717ddbd57b7f4d554
+  checksum: 0f4da2f15e6f1245e49db15801dbee52f2bbfb267e1c39225afdab5afee1a72839cd86000e65ee9d7e4dfaff12239d28beaf5ee431357fcced15fb08583d72ca
   languageName: node
   linkType: hard
 
