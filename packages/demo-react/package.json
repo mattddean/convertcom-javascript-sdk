@@ -1,6 +1,6 @@
 {
   "name": "@mattddean-oss/convertcom-js-sdk-demo-react",
-  "version": "1.3.0-canary.2",
+  "version": "1.3.0-canary.3",
   "author": "Convert Insights, Inc",
   "license": "Apache-2.0",
   "dependencies": {
@@ -16,7 +16,7 @@
     "twin.macro": "^3.0.0-rc.4"
   },
   "peerDependencies": {
-    "@mattddean-oss/convertcom-js-sdk": "1.3.0-canary.2"
+    "@mattddean-oss/convertcom-js-sdk": "1.3.0-canary.3"
   },
   "scripts": {
     "start": "react-scripts start",
